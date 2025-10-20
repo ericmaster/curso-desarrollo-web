@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Introducción</title>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@4.5.0/dist/theme/white.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides"></div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script src="https://unpkg.com/reveal.js@4.5.0/plugin/markdown/markdown.js"></script>
+
+  <script>
+    Reveal.initialize({
+      plugins: [ RevealMarkdown ],
+      markdown: {
+        path: 'intro.md',
+        separator: '^\n## ',
+        verticalSeparator: '^\n### ',
+        notesSeparator: '^Note:'
+      }
+    });
+  </script>
+</body>
+</html>
