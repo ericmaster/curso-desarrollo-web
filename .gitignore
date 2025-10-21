@@ -1,0 +1,10 @@
+# Dependencias
+node_modules/
+package-lock.json
+
+# Presentaciones generadas
+presentaciones/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

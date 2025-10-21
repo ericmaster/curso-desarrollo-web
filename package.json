@@ -1,0 +1,25 @@
+{
+  "name": "curso-desarrollo-web",
+  "version": "1.0.0",
+  "description": "Curso de Desarrollo Web con presentaciones generadas con reveal-md",
+  "scripts": {
+    "slides": "reveal-md recursos/*.md",
+    "slides:intro": "reveal-md recursos/intro.md",
+    "slides:css3": "reveal-md recursos/css3.md",
+    "export:all": "reveal-md recursos/*.md --static presentaciones --static-dirs=recursos",
+    "export:intro": "reveal-md recursos/intro.md --static presentaciones/intro --static-dirs=recursos",
+    "export:css3": "reveal-md recursos/css3.md --static presentaciones/css3 --static-dirs=recursos"
+  },
+  "keywords": [
+    "web",
+    "development",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "reveal-md": "^6.1.3"
+  }
+}
