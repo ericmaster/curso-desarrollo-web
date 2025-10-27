@@ -1,0 +1,164 @@
+{
+  "metadata": {
+    "name": "Fundamentos de Javascript",
+    "language_info": {
+      "name": "JavaScipt",
+      "version": "8.0"
+    }
+  },
+  "jsnbversion": "v0.1",
+  "cells": [
+    {
+      "code": "# Fundamentos de Javascript",
+      "status": "",
+      "output": "<h1>Fundamentos de Javascript</h1>\n",
+      "type": "html"
+    },
+    {
+      "code": "## ¿Qué es Javascript?\n\nJavascript nació como el lenguaje de programción del **lado del cliente** que permitía añadir **comportamiento dinámico a las páginas web**.\n\nHoy en día, Javascript es el principal lenguaje de programción para el desarrollo de aplicaciones web tanto del **lado del cliente** como el **lado del servidor** (gracias a Node.js).\n\nEn terminología Web:\n\n* **HTML:** Estructura\n* **CSS:** Estilo/Presentación\n* **Javascript:** Interactividad/Comportamiento",
+      "status": "",
+      "output": "<h2>¿Qué es Javascript?</h2>\n<p>Javascript nació como el lenguaje de programción del <strong>lado del cliente</strong> que permitía añadir <strong>comportamiento dinámico a las páginas web</strong>.</p>\n<p>Hoy en día, Javascript es el principal lenguaje de programción para el desarrollo de aplicaciones web tanto del <strong>lado del cliente</strong> como el <strong>lado del servidor</strong> (gracias a Node.js).</p>\n<p>En terminología Web:</p>\n<ul>\n<li><strong>HTML:</strong> Estructura</li>\n<li><strong>CSS:</strong> Estilo/Presentación</li>\n<li><strong>Javascript:</strong> Interactividad/Comportamiento</li>\n</ul>\n",
+      "type": "html"
+    },
+    {
+      "code": "// console.log('Hola Mundo!');\nscrib.show('Hola Mundo!');",
+      "status": "[2]<br><span style=\"font-size:8px\">4ms<span></span></span>",
+      "output": "Hola Mundo! <br>",
+      "type": "code"
+    },
+    {
+      "code": "## Sintaxis, variables, tipos de datos y estructuras de control\n\n### Declaración de variables\n\n3 formas de declarar variables: `var` (no se recomienda), `let`, `const`",
+      "status": "",
+      "output": "<h2>Sintaxis, variables, tipos de datos y estructuras de control</h2>\n<h3>Declaración de variables</h3>\n<p>3 formas de declarar variables: <code>var</code> (no se recomienda), <code>let</code>, <code>const</code></p>\n",
+      "type": "html"
+    },
+    {
+      "code": "var nombre = '[Mi nombre]';\nscrib.show(nombre)\n// nombre = 'Fulano';",
+      "status": "[7]<br><span style=\"font-size:8px\">4ms<span></span></span>",
+      "output": "[Mi nombre] <br>",
+      "type": "code"
+    },
+    {
+      "code": "### Tipos de datos\n\n* string\n* number\n* boolean\n* null\n* undefined\n* object\n\n### Otros tipos de datos\n\n* symbol\n* bigint",
+      "status": "",
+      "output": "<h3>Tipos de datos</h3>\n<ul>\n<li>string</li>\n<li>number</li>\n<li>boolean</li>\n<li>null</li>\n<li>undefined</li>\n<li>object</li>\n</ul>\n",
+      "type": "html"
+    },
+    {
+      "code": "//Strings\nconst nombre = \"[Tu nombre]\";\nconst mensaje = '¿cómo estás?';\nconst saludo = `Hola ${nombre}! ${mensaje}`; // Template literal\n\nscrib.show(saludo)\nscrib.show(typeof saludo)",
+      "status": "[27]<br><span style=\"font-size:8px\">7ms<span></span></span>",
+      "output": "Hola [Tu nombre]! ¿cómo estás? <br>string <br>",
+      "type": "code"
+    },
+    {
+      "code": "// Numeros\nconst numerador = 50.19;\nconst denominador = 5;\nscrib.show(numerador/denominador);\nscrib.show(10 - 2.5);",
+      "status": "[22]<br><span style=\"font-size:8px\">4ms<span></span></span>",
+      "output": "10.038 <br>7.5 <br>",
+      "type": "code"
+    },
+    {
+      "code": "// Valores logicos\nconst esEstudiante = true;\nconst tieneLicencia = false;",
+      "status": "",
+      "output": "",
+      "type": "code"
+    },
+    {
+      "code": "// Valor nulo (intencional) y undefined\nlet usuarioActual = null;\nscrib.show(usuarioActual);\nlet puntaje;\nscrib.show(puntaje);",
+      "status": "[26]<br><span style=\"font-size:8px\">6ms<span></span></span>",
+      "output": "null <br>undefined <br>",
+      "type": "code"
+    },
+    {
+      "code": "// Objetos y Arreglos\n\nconst profesor = {\n  nombre: \"Eric\",\n  edad: 40,\n  activo: true\n};\n\nconst lenguajes = [\"HTML\", \"CSS\", \"JavaScript\"];\nconst edades = [18, 22, 25];",
+      "status": "",
+      "output": "",
+      "type": "code"
+    },
+    {
+      "code": "# Operadores y Expresiones\n\nLos operadores son símbolos que permiten realizar operaciones sobre variables y valores. En JavaScript, se clasifican en varias categorías.\n\n## 1. Operadores aritméticos\n\nSe usan para realizar operaciones matemáticas.\n\n| Operador | Descripción        | Ejemplo       | Resultado |\n|----------|--------------------|---------------|-----------|\n| `+`      | Suma               | `5 + 3`       | `8`       |\n| `-`      | Resta              | `5 - 3`       | `2`       |\n| `*`      | Multiplicación     | `5 * 3`       | `15`      |\n| `/`      | División           | `6 / 3`       | `2`       |\n| `%`      | Módulo (resto)     | `7 % 3`       | `1`       |\n| `**`     | Exponenciación     | `2 ** 3`      | `8`       |\n| `++`     | Incremento         | `let x = 5; x++` | `6`    |\n| `--`     | Decremento         | `let x = 5; x--` | `4`    |\n\n> El operador `+` también se usa para **concatenar cadenas**: `\"Hola \" + \"mundo\"` → `\"Hola mundo\"`.\n",
+      "status": "",
+      "output": "<h1>Operadores y Expresiones</h1>\n<p>Los operadores son símbolos que permiten realizar operaciones sobre variables y valores. En JavaScript, se clasifican en varias categorías.</p>\n<h2>1. Operadores aritméticos</h2>\n<p>Se usan para realizar operaciones matemáticas.</p>\n<table>\n<thead>\n<tr>\n<th>Operador</th>\n<th>Descripción</th>\n<th>Ejemplo</th>\n<th>Resultado</th>\n</tr>\n</thead>\n<tbody><tr>\n<td><code>+</code></td>\n<td>Suma</td>\n<td><code>5 + 3</code></td>\n<td><code>8</code></td>\n</tr>\n<tr>\n<td><code>-</code></td>\n<td>Resta</td>\n<td><code>5 - 3</code></td>\n<td><code>2</code></td>\n</tr>\n<tr>\n<td><code>*</code></td>\n<td>Multiplicación</td>\n<td><code>5 * 3</code></td>\n<td><code>15</code></td>\n</tr>\n<tr>\n<td><code>/</code></td>\n<td>División</td>\n<td><code>6 / 3</code></td>\n<td><code>2</code></td>\n</tr>\n<tr>\n<td><code>%</code></td>\n<td>Módulo (resto)</td>\n<td><code>7 % 3</code></td>\n<td><code>1</code></td>\n</tr>\n<tr>\n<td><code>**</code></td>\n<td>Exponenciación</td>\n<td><code>2 ** 3</code></td>\n<td><code>8</code></td>\n</tr>\n<tr>\n<td><code>++</code></td>\n<td>Incremento</td>\n<td><code>let x = 5; x++</code></td>\n<td><code>6</code></td>\n</tr>\n<tr>\n<td><code>--</code></td>\n<td>Decremento</td>\n<td><code>let x = 5; x--</code></td>\n<td><code>4</code></td>\n</tr>\n</tbody></table>\n<blockquote>\n<p>El operador <code>+</code> también se usa para <strong>concatenar cadenas</strong>: <code>\"Hola \" + \"mundo\"</code> → <code>\"Hola mundo\"</code>.</p>\n</blockquote>\n",
+      "type": "html"
+    },
+    {
+      "code": "const a = 10;\nconst b = 3;\n\nscrib.show(a + b); // 13 → suma\nscrib.show(a - b); // 7  → resta\nscrib.show(a * b); // 30 → multiplicación\nscrib.show(a / b); // 3.333... → división\nscrib.show(a % b); // 1 → resto de la división\nscrib.show(a ** 2); // 100 → exponenciación\n\nlet contador = 5;\ncontador++; // ahora es 6\ncontador--; // ahora es 5",
+      "status": "",
+      "output": "",
+      "type": "code"
+    },
+    {
+      "code": "## 2. Operadores de asignación\n\nAsignan un valor a una variable.\n\n| Operador | Equivalente        | Descripción               |\n|----------|--------------------|---------------------------|\n| `=`      | `x = 5`            | Asignación simple         |\n| `+=`     | `x = x + 3`        | Suma y asigna             |\n| `-=`     | `x = x - 3`        | Resta y asigna            |\n| `*=`     | `x = x * 3`        | Multiplica y asigna       |\n| `/=`     | `x = x / 3`        | Divide y asigna           |\n| `%=`     | `x = x % 3`        | Módulo y asigna           |\n| `**=`    | `x = x ** 3`       | Exponenciación y asigna   |",
+      "status": "",
+      "output": "<h2>2. Operadores de asignación</h2>\n<p>Asignan un valor a una variable.</p>\n<table>\n<thead>\n<tr>\n<th>Operador</th>\n<th>Equivalente</th>\n<th>Descripción</th>\n</tr>\n</thead>\n<tbody><tr>\n<td><code>=</code></td>\n<td><code>x = 5</code></td>\n<td>Asignación simple</td>\n</tr>\n<tr>\n<td><code>+=</code></td>\n<td><code>x = x + 3</code></td>\n<td>Suma y asigna</td>\n</tr>\n<tr>\n<td><code>-=</code></td>\n<td><code>x = x - 3</code></td>\n<td>Resta y asigna</td>\n</tr>\n<tr>\n<td><code>*=</code></td>\n<td><code>x = x * 3</code></td>\n<td>Multiplica y asigna</td>\n</tr>\n<tr>\n<td><code>/=</code></td>\n<td><code>x = x / 3</code></td>\n<td>Divide y asigna</td>\n</tr>\n<tr>\n<td><code>%=</code></td>\n<td><code>x = x % 3</code></td>\n<td>Módulo y asigna</td>\n</tr>\n<tr>\n<td><code>**=</code></td>\n<td><code>x = x ** 3</code></td>\n<td>Exponenciación y asigna</td>\n</tr>\n</tbody></table>\n",
+      "type": "html"
+    },
+    {
+      "code": "let puntaje = 100;\npuntaje += 10; // equivalente a: puntaje = puntaje + 10 → 110\npuntaje -= 5;  // 105\npuntaje *= 2;  // 210\npuntaje /= 3;  // 70",
+      "status": "",
+      "output": "",
+      "type": "code"
+    },
+    {
+      "code": "## 3. Operadores de comparación\n\nDevuelven un valor booleano (`true` o `false`).\n\n| Operador | Descripción                     | Ejemplo         | Resultado |\n|----------|----------------------------------|-----------------|-----------|\n| `==`     | Igual (con conversión de tipo)   | `5 == \"5\"`      | `true`    |\n| `===`    | Igualdad estricta (tipo + valor) | `5 === \"5\"`     | `false`   |\n| `!=`     | Distinto (con conversión)        | `5 != \"6\"`      | `true`    |\n| `!==`    | Distinto estricto                | `5 !== \"5\"`     | `true`    |\n| `>`      | Mayor que                        | `7 > 5`         | `true`    |\n| `<`      | Menor que                        | `3 < 5`         | `true`    |\n| `>=`     | Mayor o igual                    | `5 >= 5`        | `true`    |\n| `<=`     | Menor o igual                    | `4 <= 5`        | `true`    |\n\n>  **Recomendación**: Usa siempre `===` y `!==` para evitar errores por conversión implícita de tipos.\n",
+      "status": "",
+      "output": "<h2>3. Operadores de comparación</h2>\n<p>Devuelven un valor booleano (<code>true</code> o <code>false</code>).</p>\n<table>\n<thead>\n<tr>\n<th>Operador</th>\n<th>Descripción</th>\n<th>Ejemplo</th>\n<th>Resultado</th>\n</tr>\n</thead>\n<tbody><tr>\n<td><code>==</code></td>\n<td>Igual (con conversión de tipo)</td>\n<td><code>5 == \"5\"</code></td>\n<td><code>true</code></td>\n</tr>\n<tr>\n<td><code>===</code></td>\n<td>Igualdad estricta (tipo + valor)</td>\n<td><code>5 === \"5\"</code></td>\n<td><code>false</code></td>\n</tr>\n<tr>\n<td><code>!=</code></td>\n<td>Distinto (con conversión)</td>\n<td><code>5 != \"6\"</code></td>\n<td><code>true</code></td>\n</tr>\n<tr>\n<td><code>!==</code></td>\n<td>Distinto estricto</td>\n<td><code>5 !== \"5\"</code></td>\n<td><code>true</code></td>\n</tr>\n<tr>\n<td><code>&gt;</code></td>\n<td>Mayor que</td>\n<td><code>7 &gt; 5</code></td>\n<td><code>true</code></td>\n</tr>\n<tr>\n<td><code>&lt;</code></td>\n<td>Menor que</td>\n<td><code>3 &lt; 5</code></td>\n<td><code>true</code></td>\n</tr>\n<tr>\n<td><code>&gt;=</code></td>\n<td>Mayor o igual</td>\n<td><code>5 &gt;= 5</code></td>\n<td><code>true</code></td>\n</tr>\n<tr>\n<td><code>&lt;=</code></td>\n<td>Menor o igual</td>\n<td><code>4 &lt;= 5</code></td>\n<td><code>true</code></td>\n</tr>\n</tbody></table>\n<blockquote>\n<p> <strong>Recomendación</strong>: Usa siempre <code>===</code> y <code>!==</code> para evitar errores por conversión implícita de tipos.</p>\n</blockquote>\n",
+      "type": "html"
+    },
+    {
+      "code": "scrib.show(5 == \"5\");   // true → ¡conversión de tipo!\nscrib.show(5 === \"5\");  // false → tipos diferentes\nscrib.show(5 === 5);    // true\n\nscrib.show(10 > 8);     // true\nscrib.show(7 <= 7);     // true\nscrib.show(4 != \"4\");   // false (por conversión)\nscrib.show(4 !== \"4\");  // true (mejor práctica)",
+      "status": "",
+      "output": "",
+      "type": "code"
+    },
+    {
+      "code": "## 4. Operadores lógicos\n\nSe usan en expresiones booleanas.\n\n| Operador | Nombre       | Ejemplo                     | Resultado |\n|----------|--------------|-----------------------------|-----------|\n| `&&`     | AND (y)      | `(5 > 3) && (2 < 4)`        | `true`    |\n| `||`     | OR (o)       | `(5 < 3) || (2 < 4)`        | `true`    |\n| `!`      | NOT (no)     | `!(5 == 5)`                 | `false`   |\n",
+      "status": "",
+      "output": "<h2>4. Operadores lógicos</h2>\n<p>Se usan en expresiones booleanas.</p>\n<table>\n<thead>\n<tr>\n<th>Operador</th>\n<th>Nombre</th>\n<th>Ejemplo</th>\n<th>Resultado</th>\n</tr>\n</thead>\n<tbody><tr>\n<td><code>&amp;&amp;</code></td>\n<td>AND (y)</td>\n<td><code>(5 &gt; 3) &amp;&amp; (2 &lt; 4)</code></td>\n<td><code>true</code></td>\n</tr>\n<tr>\n<td>`</td>\n<td></td>\n<td>`</td>\n<td>OR (o)</td>\n</tr>\n<tr>\n<td><code>!</code></td>\n<td>NOT (no)</td>\n<td><code>!(5 == 5)</code></td>\n<td><code>false</code></td>\n</tr>\n</tbody></table>\n",
+      "type": "html"
+    },
+    {
+      "code": "const esMayor = true;\nconst tieneCedula = true;\n\nif (esMayor && tieneCedula) {\n  scrib.show(\"Puede votar\"); // se ejecuta\n}\n\nconst esEstudiante = false;\nconst esInvitado = true;\n\nif (esEstudiante || esInvitado) {\n  scrib.show(\"Acceso permitido\"); // se ejecuta\n}\n\nscrib.show(!esEstudiante); // true → negación",
+      "status": "",
+      "output": "",
+      "type": "code"
+    },
+    {
+      "code": "## 5. Operador condicional (ternario)\n\nForma abreviada de `if...else`.\n\n```js\nconst edad = 18;\nconst mensaje = (edad >= 18) ? \"Eres mayor de edad\" : \"Eres menor\";\n// mensaje = \"Eres mayor de edad\"",
+      "status": "",
+      "output": "<h2>5. Operador condicional (ternario)</h2>\n<p>Forma abreviada de <code>if...else</code>.</p>\n<pre><code class=\"language-js\">const edad = 18;\nconst mensaje = (edad &gt;= 18) ? \"Eres mayor de edad\" : \"Eres menor\";\n// mensaje = \"Eres mayor de edad\"\n</code></pre>\n",
+      "type": "html"
+    },
+    {
+      "code": "const edad = 17;\nconst mensaje = (edad >= 18) ? \"Eres mayor de edad\" : \"Eres menor de edad\";\nscrib.show(mensaje); // \"Eres menor de edad\"",
+      "status": "",
+      "output": "",
+      "type": "code"
+    },
+    {
+      "code": "6. Otros operadores\n\n- `typeof`\n- `?` (encadenamiento opcional)\n- `??` (coalescencia nula)",
+      "status": "",
+      "output": "<ol start=\"6\">\n<li>Otros operadores</li>\n</ol>\n<ul>\n<li><code>typeof</code></li>\n<li><code>?</code> (encadenamiento opcional)</li>\n<li><code>??</code> (coalescencia nula)</li>\n</ul>\n",
+      "type": "html"
+    },
+    {
+      "code": "const nombreUsuario = null;\nconst nombreAMostrar = nombreUsuario ?? \"Invitado\";\nscrib.show(nombreAMostrar); // \"Invitado\"\n\n// vs operador OR (||)\nconst puntaje = 0;\nscrib.show(puntaje || 10); // 10 → ¡incorrecto si 0 es válido!\nscrib.show(puntaje ?? 10); // 0 → respeta el valor 0",
+      "status": "",
+      "output": "",
+      "type": "code"
+    },
+    {
+      "code": "## Funciones\n\n- En javascript, las *funciones* son una clase especial de *objetos*\n- Son bloques reusables de código que nos permiten realizar operaciones o tareas particulares",
+      "status": "",
+      "output": "<h2>Funciones</h2>\n<ul>\n<li>En javascript, las <em>funciones</em> son una clase especial de <em>objetos</em></li>\n<li>Son bloques reusables de código que nos permiten realizar operaciones o tareas particulares</li>\n</ul>\n",
+      "type": "html"
+    },
+    {
+      "code": "function myFunction(p1, p2) {\n  return p1 * p2;\n}",
+      "status": "",
+      "output": "",
+      "type": "code"
+    }
+  ],
+  "source": "https://github.com/gopi-suvanam/scribbler",
+  "run_on_load": false
+}
