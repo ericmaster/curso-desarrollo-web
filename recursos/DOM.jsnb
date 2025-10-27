@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "name": "DOM",
+    "language_info": {
+      "name": "JavaScipt",
+      "version": "8.0"
+    }
+  },
+  "jsnbversion": "v0.1",
+  "cells": [
+    {
+      "code": "# Document Object Model\n\nEl DOM (Document Object Model, o Modelo de Objeto de Documento) es una representación estructurada en forma de árbol de una página web escrita en HTML (o XML).\n\nCuando el navegador carga una página, no solo muestra el texto y los estilos: convierte el código HTML en un árbol de objetos que JavaScript puede leer, modificar y manipular en tiempo real.\n\nEn otras palabras: el DOM es la interfaz de programación que permite a JavaScript interactuar con el contenido, la estructura y el estilo de una página web. scrib.show()\n\n```html\n<html>\n  <head>\n    <title>Mi página</title>\n  </head>\n  <body>\n    <h1>Hola mundo</h1>\n    <p id=\"mensaje\">Bienvenido</p>\n  </body>\n</html>\n```\n\n```\ndocument\n└── html\n    ├── head\n    │   └── title → \"Mi página\"\n    └── body\n        ├── h1 → \"Hola mundo\"\n        └── p#mensaje → \"Bienvenido\"\n\t\t```\n\n",
+      "status": "",
+      "output": "<h1>Document Object Model</h1>\n<p>El DOM (Document Object Model, o Modelo de Objeto de Documento) es una representación estructurada en forma de árbol de una página web escrita en HTML (o XML).</p>\n<p>Cuando el navegador carga una página, no solo muestra el texto y los estilos: convierte el código HTML en un árbol de objetos que JavaScript puede leer, modificar y manipular en tiempo real.</p>\n<p>En otras palabras: el DOM es la interfaz de programación que permite a JavaScript interactuar con el contenido, la estructura y el estilo de una página web. scrib.show()</p>\n<pre><code class=\"language-html\">&lt;html&gt;\n  &lt;head&gt;\n    &lt;title&gt;Mi página&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;h1&gt;Hola mundo&lt;/h1&gt;\n    &lt;p id=\"mensaje\"&gt;Bienvenido&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;\n</code></pre>\n<pre><code>document\n└── html\n    ├── head\n    │   └── title → \"Mi página\"\n    └── body\n        ├── h1 → \"Hola mundo\"\n        └── p#mensaje → \"Bienvenido\"\n        ```\n</code></pre>\n",
+      "type": "html"
+    },
+    {
+      "code": "## ¿Para qué sirve el DOM?\n\nGracias al DOM, JavaScript puede:\n\n- Seleccionar elementos\n```javascript\nconst msg = document.getElementById(\"mensaje\");\n```",
+      "status": "",
+      "output": "<h2>¿Para qué sirve el DOM?</h2>\n<p>Gracias al DOM, JavaScript puede:</p>\n<ul>\n<li>Seleccionar elementos</li>\n</ul>\n<pre><code class=\"language-javascript\">const msg = document.getElementById(\"mensaje\");\n</code></pre>\n",
+      "type": "html"
+    },
+    {
+      "code": "//> html\n<body>\n<div class=\"card\">\n  <h2 id=\"titulo\">¡Hola!</h2>\n  <p id=\"descripcion\">Esta es una tarjeta interactiva.</p>\n</div>\n</body>",
+      "status": "[19]<br><span style=\"font-size:8px\">5ms<span></span></span>",
+      "output": "\n\n<div class=\"card\">\n  <h2 id=\"titulo\">¡Hola!</h2>\n  <p id=\"descripcion\">Esta es una tarjeta interactiva.</p>\n</div>\n <br>",
+      "type": "code"
+    },
+    {
+      "code": "//> css\n\n.card{\n  padding: 20px;\n  width: 400px;\n  margin: 0 auto;\n  background: #999;\n  border-radius: 20px;\n}",
+      "status": "[23]<br><span style=\"font-size:8px\">4ms<span></span></span>",
+      "output": "<style>\n\n.card{\n  padding: 20px;\n  width: 400px;\n  margin: 0 auto;\n  background: #999;\n  border-radius: 20px;\n}</style> <br>",
+      "type": "code"
+    },
+    {
+      "code": "",
+      "status": "",
+      "output": "",
+      "type": "code"
+    }
+  ],
+  "source": "https://github.com/gopi-suvanam/scribbler",
+  "run_on_load": false
+}
