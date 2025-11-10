@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Perfil</title>
+  <style>
+    /* Reset básico y estilos generales */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Responsive: diseño en una sola columna en móviles */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>¡Hola! Soy [Tu Nombre]</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <p>Estudiante de <strong>Tecnología Superior en Desarrollo de Software</strong> en PUCE-TEC.</p>
+      <p>Este es mi primer proyecto web: una página estática con HTML, CSS y un poco de JavaScript.</p>
+      
+      <button id="saludoBtn">Haz clic para saludar</button>
+      <p id="mensaje"></p>
+    </div>
+  </main>
+
+  <script>
+    // JavaScript moderno (ES6+)
+    document.getElementById('saludoBtn').addEventListener('click', () => {
+      const mensaje = document.getElementById('mensaje');
+      mensaje.textContent = '¡Hola desde JavaScript! 🌐';
+      mensaje.style.color = '#27ae60';
+      mensaje.style.fontWeight = 'bold';
+    });
+  </script>
+</body>
+</html>
