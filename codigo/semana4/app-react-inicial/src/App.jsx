@@ -4,28 +4,66 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [productos, setProductos] = useState([])
+  /**
+   *  producto = {
+   *    id: 10,
+   *    nombre: 'Arroz',
+   *    comprado: false,
+   *  }
+   */
+  const [productos, setProductos] = useState([]) // Array de (strings) objetos
   const [nuevoProducto, setNuevoProducto] = useState('')
+
+  const agregarProducto = () => {
+    productos.push({id: Date.now(), nombre: nuevoProducto, comprado: false})
+    setProductos(productos)
+    setNuevoProducto('')
+    // console.log(productos)
+  }
+
+  const cambiarComprado = (id) => {
+    let productosActualizados = productos.map(
+      (producto) => {
+        // producto.id === id ? {...producto, comprado: !producto.comprado} : producto
+        if (producto.id === id) {
+          return {...producto, comprado: !producto.comprado}
+        }
+        else {
+          return producto
+        }
+      }
+    )
+    setProductos(productosActualizados)
+  }
+
+  const Product = ({producto, clickHandler}) => {
+    return <li onClick={() => clickHandler(producto.id)}>
+      {producto.nombre} {producto.comprado ? 'Comprado' : 'Pendiente'}
+    </li>
+  }
 
   return (
     <>
-      <h1>Lista de Compras</h1>
+      <h1>Mi Lista de Compras</h1>
       <div className="card">
         <div>
-          <input onChange={(event) => setNuevoProducto(event.target.value)} type='text' />
+          <input
+            onChange={(event) => setNuevoProducto(event.target.value)} type='text'
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') { // Si es ENTER
+                agregarProducto()
+              }
+            }}
+            value={nuevoProducto}
+          />
         </div>
-        <button onClick={() => {
-          () => {
-            setProductos(productos.push(nuevoProducto))
-            console.log(productos)
-          }
-        }}>
+        <button onClick={agregarProducto}>
           Agregar Producto
         </button>
         <ul>
-          <li>Product 1</li>
-          <li>Product 2</li>
-          <li>Product 3</li>
+          {productos.map((producto) => {
+            return <Product clickHandler={cambiarComprado} key={producto.id} producto={producto}></Product>
+          })}
         </ul>
       </div>
 
