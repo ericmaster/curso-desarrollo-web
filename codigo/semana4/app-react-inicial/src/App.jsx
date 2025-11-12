@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Product from './componentes/producto'
 
 function App() {
   /**
@@ -15,10 +16,19 @@ function App() {
   const [nuevoProducto, setNuevoProducto] = useState('')
 
   const agregarProducto = () => {
-    productos.push({id: Date.now(), nombre: nuevoProducto, comprado: false})
+    productos.push({ id: Date.now(), nombre: nuevoProducto, comprado: false })
     setProductos(productos)
     setNuevoProducto('')
     // console.log(productos)
+  }
+
+  const saveHandler = (id, nuevoNombre) => {
+    setProductos(productos.map(producto => {
+      if (producto.id === id) {
+        producto.nombre = nuevoNombre
+      }
+      return producto
+    }))
   }
 
   const cambiarComprado = (id) => {
@@ -26,7 +36,7 @@ function App() {
       (producto) => {
         // producto.id === id ? {...producto, comprado: !producto.comprado} : producto
         if (producto.id === id) {
-          return {...producto, comprado: !producto.comprado}
+          return { ...producto, comprado: !producto.comprado }
         }
         else {
           return producto
@@ -36,10 +46,9 @@ function App() {
     setProductos(productosActualizados)
   }
 
-  const Product = ({producto, clickHandler}) => {
-    return <li onClick={() => clickHandler(producto.id)}>
-      {producto.nombre} {producto.comprado ? 'Comprado' : 'Pendiente'}
-    </li>
+  const deleteHandler = (id) => {
+    let productosActualizados = productos.filter((producto) => id != producto.id )
+    setProductos(productosActualizados)
   }
 
   return (
@@ -62,7 +71,12 @@ function App() {
         </button>
         <ul>
           {productos.map((producto) => {
-            return <Product clickHandler={cambiarComprado} key={producto.id} producto={producto}></Product>
+            return <Product
+              clickHandler={cambiarComprado}
+              deleteHandler={deleteHandler}
+              saveHandler={saveHandler}
+              key={producto.id}
+              producto={producto}></Product>
           })}
         </ul>
       </div>
