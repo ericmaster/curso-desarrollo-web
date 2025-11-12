@@ -21,5 +21,9 @@
   "license": "ISC",
   "devDependencies": {
     "reveal-md": "^6.1.3"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.17",
+    "tailwindcss": "^4.1.17"
   }
 }

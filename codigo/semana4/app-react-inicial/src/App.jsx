@@ -52,11 +52,12 @@ function App() {
   }
 
   return (
-    <>
+    <div className="bg-cyan-900 px-8 py-5 rounded-2xl">
       <h1>Mi Lista de Compras</h1>
       <div className="card">
         <div>
           <input
+            className="bg-slate-200 mb-3 text-teal-800"
             onChange={(event) => setNuevoProducto(event.target.value)} type='text'
             onKeyDown={(event) => {
               if (event.key === 'Enter') { // Si es ENTER
@@ -81,7 +82,7 @@ function App() {
         </ul>
       </div>
 
-    </>
+    </div>
   )
 }
 
