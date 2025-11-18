@@ -28,7 +28,7 @@ function App() {
     const cargarUsuarios = async () => {
       const url = "https://jsonplaceholder.typicode.com/users";
       try {
-        await sleep(10000);
+        await sleep(3000);
         const response = await fetch(url);
         if (response.ok === true) {
           setUsuarios(await response.json())
