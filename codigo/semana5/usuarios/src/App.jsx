@@ -20,21 +20,24 @@ function App() {
   // ]
   const [usuarios, setUsuarios] = useState([])
 
-  function sleep(ms) {
+  const sleep = async (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  useEffect(async () => {
-    const url = "https://jsonplaceholder.typicode.com/users";
-    try {
-      const response = await fetch(url);
-      if (response.ok === true) {
-        // console.log(response.json())
-        setUsuarios(await response.json())
+  useEffect( () => {
+    const cargarUsuarios = async () => {
+      const url = "https://jsonplaceholder.typicode.com/users";
+      try {
+        await sleep(10000);
+        const response = await fetch(url);
+        if (response.ok === true) {
+          setUsuarios(await response.json())
+        }
+      } catch (error) {
+        console.error(error.message);
       }
-    } catch (error) {
-      console.error(error.message);
     }
+    cargarUsuarios()
   }, [])
 
   return (
