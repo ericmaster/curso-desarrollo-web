@@ -15,7 +15,9 @@ Transformar la hoja de vida en una aplicación interactiva se pueda gestionar su
 4. **Estilos CSS básicos** (archivo separado o en línea)
 5. **Agregar efecto parallax en el background**
 
-Usar como referencia https://docs.rxresu.me/
+Usar como referencia
+https://docs.rxresu.me/
+https://rxresu.me/
 
 **Puntos extra:** Aplicar persistencia con localstorage.
 
