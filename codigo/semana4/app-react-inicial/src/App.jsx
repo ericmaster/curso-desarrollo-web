@@ -16,8 +16,9 @@ function App() {
   const [nuevoProducto, setNuevoProducto] = useState('')
 
   const agregarProducto = () => {
-    productos.push({ id: Date.now(), nombre: nuevoProducto, comprado: false })
-    setProductos(productos)
+    // productos.push({ id: Date.now(), nombre: nuevoProducto, comprado: false })
+    // setProductos(productos)
+    setProductos([...productos, { id: Date.now(), nombre: nuevoProducto, comprado: false }])
     setNuevoProducto('')
     // console.log(productos)
   }
