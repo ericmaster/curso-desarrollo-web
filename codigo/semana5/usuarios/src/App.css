@@ -40,3 +40,13 @@
 .read-the-docs {
   color: #888;
 }
+
+.lista-light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.lista-dark {
+  background-color: #121212;
+  color: #ffffff;
+}
