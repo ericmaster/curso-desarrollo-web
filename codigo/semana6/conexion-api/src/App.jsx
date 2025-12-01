@@ -1,4 +1,7 @@
 import './App.css'
+import { Routes, Route } from 'react-router-dom'
+import ListaPosts from './components/ListaPosts'
+import DetallePost from './components/DetallePost'
 
 function App() {
   return (
@@ -10,10 +13,15 @@ function App() {
 
       <main>
         {/* Aquí irá el contenido de la aplicación */}
-        <p>Paso 1: Instalar React Router</p>
+        <p>[x] Paso 1: Instalar React Router</p>
         <p>Paso 2: Crear componentes ListaPosts y DetallePost</p>
         <p>Paso 3: Configurar rutas</p>
         <p>Paso 4: Implementar consumo de API</p>
+        <Routes>
+          <Route path="/" element={<ListaPosts />} />
+          <Route path="/posts/:id" element={<DetallePost />} />
+        </Routes>
+
       </main>
     </div>
   )

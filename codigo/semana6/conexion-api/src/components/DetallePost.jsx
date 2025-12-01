@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link, useParams } from "react-router";
 
 function DetallePost() {
   const [post, setPost] = useState(null);
@@ -8,7 +9,7 @@ function DetallePost() {
 
   // PASO 6: Obtener el ID del post desde los parámetros de la URL
   // TODO: Usar useParams de react-router-dom
-  const postId = null; // Placeholder
+  const { id: postId } = useParams();
 
   useEffect(() => {
     const cargarDetalles = async () => {
@@ -17,9 +18,25 @@ function DetallePost() {
         
         // PASO 7: Cargar el post
         // TODO: Fetch a https://jsonplaceholder.typicode.com/posts/{postId}
+        const respuesta = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`);
+        if (!respuesta.ok) {
+          throw new Error('Error al cargar el post');
+        }
+        const datosPost = await respuesta.json();
+        setPost(datosPost);
         
         // PASO 8: Cargar el usuario del post
         // TODO: Fetch a https://jsonplaceholder.typicode.com/users/{post.userId}
+        const respuestaUsuario = await fetch(`https://jsonplaceholder.typicode.com/users/${datosPost.userId}`);
+        if (!respuestaUsuario.ok) {
+          throw new Error('Error al cargar el usuario');
+        }
+        const datosUsuario = await respuestaUsuario.json();
+        const usuario = {
+          name: datosUsuario.name,
+          email: datosUsuario.email
+        }
+        setUsuario(usuario);
         
       } catch (err) {
         setError(err.message);
@@ -58,8 +75,9 @@ function DetallePost() {
   return (
     <div className="detalle-container">
       {/* PASO 9: Agregar Link/botón para volver a la lista */}
-      <button className="boton-volver">← Volver a la lista</button>
-      
+      {/* <button className="boton-volver" href="/">← Volver a la lista</button> */}
+      <Link to="/" className="boton-volver">← Volver a la lista</Link>
+
       <div className="detalle-post">
         <h2>{post.title}</h2>
         

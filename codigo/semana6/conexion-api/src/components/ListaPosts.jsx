@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from "react-router";
 
 function ListaPosts() {
   const [posts, setPosts] = useState([]);
@@ -10,9 +11,13 @@ function ListaPosts() {
     const cargarPosts = async () => {
       try {
         setCargando(true);
-        // TODO: Hacer fetch a https://jsonplaceholder.typicode.com/posts
-        // TODO: Convertir respuesta a JSON
-        // TODO: Actualizar el estado con setPosts
+        // Hacer fetch a https://jsonplaceholder.typicode.com/posts
+        const respuesta = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=10');
+        if (!respuesta.ok) {
+          throw new Error('Error al cargar los posts');
+        }
+        const datos = await respuesta.json();
+        setPosts(datos);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -48,6 +53,7 @@ function ListaPosts() {
         {posts.map(post => (
           <div key={post.id} className="post-card">
             {/* PASO 5: Agregar Link de React Router para navegar al detalle */}
+            <Link to={`/posts/${post.id}`} className="post-link">Ver Detalle</Link>
             <h3>{post.title}</h3>
             <p>{post.body.substring(0, 100)}...</p>
           </div>
