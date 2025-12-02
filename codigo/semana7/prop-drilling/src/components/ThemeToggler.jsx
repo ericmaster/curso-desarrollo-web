@@ -1,7 +1,11 @@
 // ThemeToggler.jsx - Nivel 3 de prop drilling
 // Este es el componente que realmente NECESITA las props
 // Las props han viajado: App → Layout → Sidebar → ThemeToggler
-function ThemeToggler({ modoOscuro, toggleTema }) {
+import { useThemeContext } from "../context/ThemeContext";
+  
+function ThemeToggler() {
+  const { modoOscuro, toggleTema } = useThemeContext();
+
   return (
     <div className="theme-toggler">
       <h4>Control de Tema</h4>

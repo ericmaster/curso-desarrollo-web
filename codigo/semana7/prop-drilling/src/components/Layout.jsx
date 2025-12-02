@@ -1,9 +1,11 @@
 import Sidebar from './Sidebar'
+import { useThemeContext } from '../context/ThemeContext';
 
 // Layout.jsx - Nivel 1 de prop drilling
 // Recibe modoOscuro y toggleTema de App
 // y los pasa a Sidebar (aunque Layout no los usa directamente)
-function Layout({ modoOscuro, toggleTema }) {
+function Layout() {
+  const { modoOscuro } = useThemeContext();
   return (
     <div className={`layout ${modoOscuro ? 'dark' : 'light'}`}>
       <main className="main-content">
@@ -20,7 +22,7 @@ function Layout({ modoOscuro, toggleTema }) {
           </ul>
         </div>
       </main>
-      <Sidebar modoOscuro={modoOscuro} toggleTema={toggleTema} />
+      <Sidebar />
     </div>
   );
 }

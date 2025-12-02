@@ -1,9 +1,11 @@
 import ThemeToggler from './ThemeToggler'
+import { useThemeContext } from '../context/ThemeContext';
 
 // Sidebar.jsx - Nivel 2 de prop drilling
 // Recibe modoOscuro y toggleTema de Layout
 // y los pasa a ThemeToggler
-function Sidebar({ modoOscuro, toggleTema }) {
+function Sidebar() {
+  const { modoOscuro } = useThemeContext();
   return (
     <aside className="sidebar">
       <h3>Barra Lateral</h3>
@@ -18,7 +20,7 @@ function Sidebar({ modoOscuro, toggleTema }) {
           <li><strong>toggleTema:</strong> función</li>
         </ul>
       </div>
-      <ThemeToggler modoOscuro={modoOscuro} toggleTema={toggleTema} />
+      <ThemeToggler/>
     </aside>
   );
 }

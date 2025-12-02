@@ -7,6 +7,7 @@ import './App.css'
 // a través de múltiples niveles de componentes (prop drilling)
 function App() {
   const [modoOscuro, setModoOscuro] = useState(false);
+  const [paleta, setPaleta] = useState('azul');
   const toggleTema = () => setModoOscuro(!modoOscuro);
 
   return (
