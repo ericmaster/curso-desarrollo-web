@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Repaso</title>
+</head>
+<body>
+Repaso de javascript
+<button id="boton1" class="boton">Haz clic aquí</button>
+<button id="boton2" class="boton">Otro boton</button>
+<div id="contenido">Aqui el contenido...</div>
+<script>
+    // const botoncito = document.getElementById('boton');
+    // botoncito.innerHTML = 'Haz click para saludar!';
+    // console.log(document.querySelectorAll('.boton'));
+    document.querySelectorAll('body .boton').forEach((boton) => {
+        boton.addEventListener('click', (event) => {
+            event.target.innerHTML = 'Has hecho clic en este boton!';
+            document.getElementById('contenido').innerHTML = 'Has hecho clic en el boton con id: ' + event.target.id;
+        });
+    });
+    // const clickCallback = (event) => {
+    //     console.log(event.target);
+    //     // event.target.innerHTML = 'Has hecho clic!';
+    //     botoncito.innerHTML = 'Has hecho clic!';
+    // }
+    // botoncito.addEventListener('click', clickCallback)
+</script>
+</body>
+</html>
