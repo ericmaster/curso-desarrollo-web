@@ -18,11 +18,14 @@ function App() {
         <p>[x] Paso 2: Crear componentes ListaPosts y DetallePost</p>
         <p>[x] Paso 3: Configurar rutas</p>
         <p>[x] Paso 4: Implementar consumo de API</p>
+        <p>[x] Paso 5: Agregar paginación</p>
+        <p>[x] Paso 6: Implementar edición (PUT) y eliminación (DELETE)</p>
         <Link to="/posts/new">Crear Nuevo Post</Link>
         <Routes>
           <Route path="/" element={<ListaPosts />} />
           <Route path="/posts/:id" element={<DetallePost />} />
           <Route path="/posts/new" element={<FormularioPost />} />
+          <Route path="/posts/:id/edit" element={<FormularioPost />} />
         </Routes>
 
       </main>
