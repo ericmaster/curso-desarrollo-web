@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useFetch } from '../hooks/useFetch';
 
 function FormularioPost() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ function FormularioPost() {
     
     const url = isEditing 
       ? `/api/posts/${id}` 
-      : '/api/posts${id}';
+      : '/api/posts';
     // const url = `/api/posts${isEditing ? `/${id}` : ''}`;
     const method = isEditing ? 'PUT' : 'POST';
 
@@ -80,6 +81,8 @@ function FormularioPost() {
       setCargando(false);
     }
   };
+
+  const {data: usuarios, cargando: cargandoUsuarios, error: errorUsuarios} = useFetch('/api/users');
 
   if (cargando && isEditing) {
     return (
@@ -128,8 +131,8 @@ function FormularioPost() {
         </div>
         
         <div className="form-group">
-          <label htmlFor="userId">Usuario ID:</label>
-          <input
+          <label htmlFor="userId">Usuario:</label>
+          {/* <input
             type="number"
             id="userId"
             name="userId"
@@ -138,7 +141,28 @@ function FormularioPost() {
             className="form-input"
             min="1"
             required
-          />
+          /> */}
+          {cargandoUsuarios ? (
+            <p>Cargando usuarios...</p>
+          ) : errorUsuarios ? (
+            <p>Error al cargar usuarios: {errorUsuarios}</p>
+          ) : (
+            <select
+              id="userId"
+              name="userId"
+              value={formData.userId}
+              onChange={handleChange}
+              className="form-select"
+              required
+            >
+              <option value="">Seleccione un usuario</option>
+              {usuarios && usuarios.map(usuario => (
+                <option key={usuario.id} value={usuario.id}>
+                  {usuario.name}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
         
         <div className="form-actions">
