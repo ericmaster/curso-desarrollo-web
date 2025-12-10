@@ -10,7 +10,6 @@ function DetallePost() {
   // const [error, setError] = useState(null);
 
   // PASO 6: Obtener el ID del post desde los parámetros de la URL
-  // TODO: Usar useParams de react-router-dom
   const { id: postId } = useParams();
   const navigate = useNavigate();
 
