@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from "react-router";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useFetch } from '../hooks/useFetch';
 
 function DetallePost() {
