@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/auth';
+const API_URL = 'https://jubilant-zebra-wxvqvvrjw2gjwr-5173.app.github.dev/api';
 
 export const authService = {
   // Registrar nuevo usuario
