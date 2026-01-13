@@ -22,6 +22,37 @@ persistencia_datos/
 
 ## 🚀 Instalación y Configuración
 
+### 0. Instalar PostgreSQL
+
+Si aún no tienes PostgreSQL instalado:
+
+**En Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
+
+**En Fedora/RHEL:**
+```bash
+sudo dnf install postgresql-server postgresql-contrib
+sudo postgresql-setup --initdb
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+**En Arch Linux:**
+```bash
+sudo pacman -S postgresql
+sudo -u postgres initdb -D /var/lib/postgres/data
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+Verifica que PostgreSQL esté corriendo:
+```bash
+sudo systemctl status postgresql
+```
+
 ### 1. Configurar PostgreSQL
 
 Primero, crea la base de datos ejecutando el script SQL:

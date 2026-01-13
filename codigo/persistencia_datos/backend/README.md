@@ -9,19 +9,58 @@ Backend de la aplicación de ejemplo de persistencia de datos con PostgreSQL y S
 
 ## 🚀 Instalación
 
-1. Crea la base de datos ejecutando `crear_db.sql`:
+### 1. Instalar PostgreSQL
+
+Si aún no tienes PostgreSQL instalado:
+
+**En Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
+
+**En Fedora/RHEL:**
+```bash
+sudo dnf install postgresql-server postgresql-contrib
+sudo postgresql-setup --initdb
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+**En Arch Linux:**
+```bash
+sudo pacman -S postgresql
+sudo -u postgres initdb -D /var/lib/postgres/data
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+Verifica que PostgreSQL esté corriendo:
+```bash
+sudo systemctl status postgresql
+```
+
+### 2. Crear la base de datos
+
+Crea la base de datos ejecutando `crear_db.sql`:
    ```bash
    sudo -u postgres psql -f crear_db.sql
    ```
 
-2. Instala las dependencias:
+### 3. Instalar dependencias
+
+Instala las dependencias:
    ```bash
    npm install
    ```
 
-3. Ajusta las credenciales en `models.js` si es necesario
+### 4. Configurar credenciales
 
-4. Inicia el servidor:
+Ajusta las credenciales en `models.js` si es necesario
+
+### 5. Iniciar el servidor
+
+Inicia el servidor:
    ```bash
    npm start
    ```
