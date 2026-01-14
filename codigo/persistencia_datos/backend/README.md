@@ -5,13 +5,48 @@ Backend de la aplicación de ejemplo de persistencia de datos con PostgreSQL y S
 ## 📁 Estructura
 - **index.js**: Servidor Express con API REST completa (CRUD)
 - **models.js**: Modelos Sequelize (Usuario, Post) y relaciones
-- **crear_db.sql**: Script SQL para crear la base de datos
+- **.env**: Variables de entorno para configuración de base de datos
+- **docker-compose.yaml**: Configuración de PostgreSQL y Adminer con Docker
 
 ## 🚀 Instalación
 
-### 1. Instalar PostgreSQL
+### Opción 1: Usar Docker Compose (Recomendado)
 
-Si aún no tienes PostgreSQL instalado:
+La forma más rápida de empezar es usando Docker Compose, que configura PostgreSQL y Adminer automáticamente:
+
+1. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+2. **Configurar variables de entorno**
+   
+   Copia el archivo de ejemplo:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Las credenciales por defecto ya están configuradas para funcionar con docker-compose.
+
+3. **Iniciar PostgreSQL con Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
+   
+   Esto iniciará:
+   - PostgreSQL en `http://localhost:5432`
+   - Adminer (interfaz web) en `http://localhost:8080`
+
+4. **Iniciar el servidor**
+   ```bash
+   npm start
+   ```
+
+   El servidor estará disponible en `http://localhost:3000`
+
+### Opción 2: Instalar PostgreSQL localmente
+
+Si prefieres instalar PostgreSQL directamente en tu sistema:
 
 **En Ubuntu/Debian:**
 ```bash
@@ -40,27 +75,33 @@ Verifica que PostgreSQL esté corriendo:
 sudo systemctl status postgresql
 ```
 
-### 2. Crear la base de datos
+**Crear la base de datos y usuario:**
 
-Crea la base de datos ejecutando `crear_db.sql`:
-   ```bash
-   sudo -u postgres psql -f crear_db.sql
-   ```
+```bash
+sudo -u postgres psql
+```
 
-### 3. Instalar dependencias
+Luego ejecuta en el prompt de PostgreSQL:
+```sql
+CREATE USER admin WITH PASSWORD 'admin123';
+CREATE DATABASE mydb OWNER admin;
+GRANT ALL PRIVILEGES ON DATABASE mydb TO admin;
+\q
+```
 
-Instala las dependencias:
-   ```bash
-   npm install
-   ```
+**Instalar dependencias:**
+```bash
+npm install
+```
 
-### 4. Configurar credenciales
+**Configurar variables de entorno:**
 
-Ajusta las credenciales en `models.js` si es necesario
+Copia el archivo de ejemplo y ajusta si es necesario:
+```bash
+cp .env.example .env
+```
 
-### 5. Iniciar el servidor
-
-Inicia el servidor:
+**Iniciar el servidor:**
    ```bash
    npm start
    ```

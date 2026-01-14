@@ -1,11 +1,18 @@
 // Configuración de Sequelize para conectar a PostgreSQL
 const { Sequelize, DataTypes } = require('sequelize');
+require('dotenv').config();
 
-// Cambia estos valores según tu entorno
-const sequelize = new Sequelize('ejemplo_db', 'usuario', 'password', {
-  host: 'localhost',
-  dialect: 'postgres',
-});
+// Configuración usando variables de entorno
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 5432,
+    dialect: 'postgres',
+  }
+);
 
 // Definición del modelo Usuario
 const Usuario = sequelize.define('Usuario', {
