@@ -103,18 +103,14 @@ Para la relación Usuario-Posts, tienes dos opciones:
 
 ## 🛠️ Parte 2: Configuración del Entorno
 
-### 2.1 Crear la estructura de carpetas
+### 2.1 Realizar un fork del presente repositorio y trabajar sobre la estructura de archivos de `codigo/persistencia_mongodb`
 
-```bash
-cd codigo
-mkdir persistencia_mongodb
-cd persistencia_mongodb
-mkdir backend frontend
-```
+- Dentro de github crear un fork de este repositorio
+- El ejercicio deberá ser entregado como un pull request.
 
 ### 2.2 Instalar MongoDB con Docker
 
-Crea un archivo `backend/docker-compose.yaml`:
+Actualiza el archivo `backend/docker-compose.yaml`:
 
 ```yaml
 services:
@@ -150,7 +146,7 @@ volumes:
 
 ### 2.3 Crear archivo de variables de entorno
 
-Crea `backend/.env`:
+Crea o edita `backend/.env`:
 
 ```env
 # MongoDB Configuration
@@ -169,7 +165,7 @@ MONGO_EXPRESS_PORT=8081
 PORT=3000
 ```
 
-Crea también `backend/.env.example` (sin valores sensibles):
+Crea o edita también `backend/.env.example` (sin valores sensibles):
 
 ```env
 # MongoDB Configuration
@@ -543,7 +539,7 @@ Deberías ver:
 ### 5.3 Iniciar el Frontend
 
 ```bash
-cd codigo/persistencia_mongodb/frontend
+cd codigo/persistencia_datos/frontend
 npm install  # Solo la primera vez
 npm run dev
 ```
@@ -733,9 +729,7 @@ Usa este checklist para verificar tu progreso:
 - [ ] Populate (relaciones) funcionando
 
 ### Frontend
-- [ ] Archivos copiados o creados
 - [ ] Dependencias instaladas
-- [ ] Proxy configurado en vite.config.js
 - [ ] Aplicación corriendo en el navegador
 
 ### Pruebas
