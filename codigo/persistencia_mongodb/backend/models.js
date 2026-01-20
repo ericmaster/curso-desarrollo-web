@@ -1,45 +1,48 @@
-// Configuración de Sequelize para conectar a PostgreSQL
-const { Sequelize, DataTypes } = require('sequelize');
-require('dotenv').config();
+const mongoose = require("mongoose");
 
-// Configuración usando variables de entorno
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+// ----- Schema Post -----
+const PostSchema = new mongoose.Schema(
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-  }
+    titulo: {
+      type: String,
+      required: true,
+    },
+    contenido: {
+      type: String,
+    },
+    autor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario",
+      required: true,
+    },
+  },
+  { timestamps: true }
 );
 
-// Definición del modelo Usuario
-const Usuario = sequelize.define('Usuario', {
-  nombre: {
-    type: DataTypes.STRING,
-    allowNull: false
+// ----- Schema Usuario -----
+const UsuarioSchema = new mongoose.Schema(
+  {
+    nombre: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  }
-});
+  { timestamps: true }
+);
 
-// Definición del modelo Post
-const Post = sequelize.define('Post', {
-  titulo: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  contenido: {
-    type: DataTypes.TEXT
-  }
-});
+// ----- Modelos -----
+const Usuario = mongoose.model("Usuario", UsuarioSchema);
+const Post = mongoose.model("Post", PostSchema);
 
-// Relaciones
-Usuario.hasMany(Post, { as: 'posts', foreignKey: 'usuarioId' });
-Post.belongsTo(Usuario, { as: 'autor', foreignKey: 'usuarioId' });
-
-module.exports = { sequelize, Usuario, Post };
+module.exports = { Usuario, Post };
