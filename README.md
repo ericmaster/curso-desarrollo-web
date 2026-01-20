@@ -2,11 +2,23 @@
 
 ## Índice
 
-1. [Introducción](recursos/intro.md)
+### Recursos Teóricos
 
-2. [Hojas de Estilo](recursos/css3.md)
-
-3. Javascript
+1. [Fundamentos de Javascript](recursos/01-Fundamentos-de-Javascript.jsnb)
+2. [DOM](recursos/02-DOM.jsnb)
+3. [Introducción](recursos/03-intro.md)
+4. [Hojas de Estilo (CSS3)](recursos/04-css3.md)
+5. [Fundamentos de Git](recursos/05-fundamentos-git.md)
+6. [Autenticación en React](recursos/06-autenticacion-react.md)
+7. [API RESTful](recursos/07-api-restful.md)
+8. [React](recursos/08-react.md)
+9. [React Hooks](recursos/09-react-hooks.md)
+10. [React Hooks 2](recursos/10-react-hooks-2.md)
+11. [Javascript Avanzado](recursos/11-js.md)
+12. [API RESTful con Express](recursos/12-api-restful-express.md)
+13. [Persistencia de Datos](recursos/13-persistencia-de-datos.md)
+14. [Docker y Containers](recursos/14-docker-containers.md)
+15. [Validación, Seguridad y Middleware en Express](recursos/15-validacion-seguridad-middleware-express.md)
 
 ---
 
