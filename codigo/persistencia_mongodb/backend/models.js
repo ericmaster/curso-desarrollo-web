@@ -1,45 +1,19 @@
-// Configuración de Sequelize para conectar a PostgreSQL
-const { Sequelize, DataTypes } = require('sequelize');
+const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
 
-// Configuración usando variables de entorno
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-  }
-);
+// Configuración de MongoDB (Usará localhost si no hay variables de entorno)
+const url = process.env.MONGO_URI || 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const dbName = 'red_social_db';
 
-// Definición del modelo Usuario
-const Usuario = sequelize.define('Usuario', {
-  nombre: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  }
-});
+async function connectDB() {
+    await client.connect();
+    const db = client.db(dbName);
+    return {
+        usuarios: db.collection('usuarios'),
+        posts: db.collection('posts'),
+        client
+    };
+}
 
-// Definición del modelo Post
-const Post = sequelize.define('Post', {
-  titulo: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  contenido: {
-    type: DataTypes.TEXT
-  }
-});
-
-// Relaciones
-Usuario.hasMany(Post, { as: 'posts', foreignKey: 'usuarioId' });
-Post.belongsTo(Usuario, { as: 'autor', foreignKey: 'usuarioId' });
-
-module.exports = { sequelize, Usuario, Post };
+module.exports = { connectDB, ObjectId };
