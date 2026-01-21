@@ -181,3 +181,14 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
 });
+
+// Ruta raíz para verificar que la API funciona
+app.get('/', (req, res) => {
+  res.json({
+    mensaje: "🚀 API de Persistencia MongoDB - Lista para usar",
+    endpoints: [
+      "/api/usuarios",
+      "/api/posts"
+    ]
+  });
+});
