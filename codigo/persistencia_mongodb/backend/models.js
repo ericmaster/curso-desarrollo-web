@@ -1,45 +1,101 @@
-// Configuración de Sequelize para conectar a PostgreSQL
-const { Sequelize, DataTypes } = require('sequelize');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
-// Configuración usando variables de entorno
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
+// =======================
+// Conexión a MongoDB
+// =======================
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('✅ Conectado a MongoDB');
+  } catch (error) {
+    console.error('❌ Error conectando a MongoDB:', error.message);
+    process.exit(1);
   }
+};
+
+// =======================
+// Esquema de Usuario
+// =======================
+const usuarioSchema = new mongoose.Schema(
+  {
+    nombre: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 2
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true
+    }
+  },
+  { timestamps: true }
 );
 
-// Definición del modelo Usuario
-const Usuario = sequelize.define('Usuario', {
-  nombre: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  }
+// 🔹 Virtual (relación)
+usuarioSchema.virtual('posts', {
+  ref: 'Post',
+  localField: '_id',
+  foreignField: 'autor'
 });
 
-// Definición del modelo Post
-const Post = sequelize.define('Post', {
-  titulo: {
-    type: DataTypes.STRING,
-    allowNull: false
+// 🔹 Método de instancia (7.2)
+usuarioSchema.methods.saludar = function () {
+  return `Hola, soy ${this.nombre}`;
+};
+
+// 🔹 Método estático (7.2)
+usuarioSchema.statics.buscarPorEmail = function (email) {
+  return this.findOne({ email: email.toLowerCase() });
+};
+
+// 🔹 Índice (7.3)
+usuarioSchema.index({ email: 1 });
+
+// =======================
+// Esquema de Post (7.1)
+// =======================
+const postSchema = new mongoose.Schema(
+  {
+    titulo: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    contenido: {
+      type: String
+    },
+    autor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Usuario',
+      required: true
+    },
+    fechaPublicacion: {
+      type: Date,
+      default: null
+    },
+    publicado: {
+      type: Boolean,
+      default: false
+    }
   },
-  contenido: {
-    type: DataTypes.TEXT
-  }
-});
+  { timestamps: true }
+);
 
-// Relaciones
-Usuario.hasMany(Post, { as: 'posts', foreignKey: 'usuarioId' });
-Post.belongsTo(Usuario, { as: 'autor', foreignKey: 'usuarioId' });
+// 🔹 Índices (7.3)
+postSchema.index({ autor: 1, createdAt: -1 });
 
-module.exports = { sequelize, Usuario, Post };
+// 🔹 Índice texto completo (7.4)
+postSchema.index({ titulo: 'text', contenido: 'text' });
+
+// =======================
+// Modelos
+// =======================
+const Usuario = mongoose.model('Usuario', usuarioSchema);
+const Post = mongoose.model('Post', postSchema);
+
+module.exports = { connectDB, Usuario, Post };

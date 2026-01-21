@@ -51,13 +51,15 @@ function App() {
       setLoading(true)
       const response = await fetch(`${API_URL}/posts`)
       const data = await response.json()
-      setPosts(data)
+      setPosts(Array.isArray(data) ? data : data.posts || [])
     } catch (err) {
       setError('Error al cargar posts')
+      setPosts([])
     } finally {
       setLoading(false)
     }
   }
+
 
   const crearUsuario = async (e) => {
     e.preventDefault()
@@ -125,25 +127,35 @@ function App() {
     setEditingUsuarioId(null)
   }
 
-  const crearPost = async (e) => {
-    e.preventDefault()
-    try {
-      const response = await fetch(`${API_URL}/usuarios/${formPost.usuarioId}/posts`, {
+const crearPost = async (e) => {
+  e.preventDefault()
+
+  try {
+    const response = await fetch(
+      `${API_URL}/usuarios/${formPost.usuarioId}/posts`,
+      {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ titulo: formPost.titulo, contenido: formPost.contenido })
-      })
-      
-      if (!response.ok) throw new Error('Error al crear post')
-      
-      setSuccess('Post creado exitosamente')
-      setFormPost({ titulo: '', contenido: '', usuarioId: '' })
-      cargarPosts()
-      cargarUsuarios()
-    } catch (err) {
-      setError('Error al crear post')
+        body: JSON.stringify({
+          titulo: formPost.titulo,
+          contenido: formPost.contenido
+        })
+      }
+    ) // 👈 ESTE PARÉNTESIS ES CLAVE
+
+    if (!response.ok) {
+      throw new Error('Error al crear post')
     }
+
+    setSuccess('Post creado exitosamente')
+    setFormPost({ titulo: '', contenido: '', usuarioId: '' })
+    cargarPosts()
+    cargarUsuarios()
+  } catch (err) {
+    setError('Error al crear post')
   }
+}
+
 
   const actualizarPost = async (e) => {
     e.preventDefault()
@@ -183,9 +195,9 @@ function App() {
     setFormPost({ 
       titulo: post.titulo, 
       contenido: post.contenido, 
-      usuarioId: post.usuarioId 
+      usuarioId: post.usuario?._id || ''
     })
-    setEditingPostId(post.id)
+    setEditingPostId(post._id)
     setActiveTab('posts')
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -270,7 +282,7 @@ function App() {
             ) : (
               <div className="items-grid">
                 {usuarios.map(usuario => (
-                  <div key={usuario.id} className="item-card">
+                  <div key={usuario._id} className="item-card">
                     <h3>{usuario.nombre}</h3>
                     <p><strong>Email:</strong> {usuario.email}</p>
                     <p className="meta">ID: {usuario.id}</p>
@@ -279,7 +291,7 @@ function App() {
                       <div className="posts-list">
                         <h4>Posts de este usuario: ({usuario.posts.length})</h4>
                         {usuario.posts.map(post => (
-                          <div key={post.id} className="post-item">
+                          <div key={post._id} className="post-item">
                             <strong>{post.titulo}</strong>
                             <p>{post.contenido?.substring(0, 100)}...</p>
                           </div>
@@ -318,7 +330,7 @@ function App() {
                   >
                     <option value="">Selecciona un usuario</option>
                     {usuarios.map(usuario => (
-                      <option key={usuario.id} value={usuario.id}>
+                      <option key={usuario._id} value={usuario._id}>
                         {usuario.nombre} ({usuario.email})
                       </option>
                     ))}
@@ -371,8 +383,8 @@ function App() {
                   <div key={post.id} className="item-card">
                     <h3>{post.titulo}</h3>
                     <p>{post.contenido}</p>
-                    {post.autor && (
-                      <p><strong>Autor:</strong> {post.autor.nombre} ({post.autor.email})</p>
+                    {post.usuario && (
+                      <p><strong>Autor:</strong> {post.usuario.nombre} ({post.usuario.email})</p>
                     )}
                     <p className="meta">ID: {post.id}</p>
                     
