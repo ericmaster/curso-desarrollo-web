@@ -706,35 +706,35 @@ app.get('/api/posts', async (req, res) => {
 Usa este checklist para verificar tu progreso:
 
 ### Configuración
-- [ ] MongoDB corriendo en Docker
-- [ ] Mongo Express accesible
-- [ ] Variables de entorno configuradas
-- [ ] Dependencias instaladas
+- [ y] MongoDB corriendo en Docker
+- [ y] Mongo Express accesible
+- [ y] Variables de entorno configuradas
+- [ y] Dependencias instaladas
 
 ### Backend
-- [ ] `models.js` con esquemas de Mongoose
-- [ ] Conexión a MongoDB exitosa
-- [ ] Todas las rutas implementadas:
-  - [ ] POST /api/usuarios
-  - [ ] GET /api/usuarios
-  - [ ] GET /api/usuarios/:id
-  - [ ] PUT /api/usuarios/:id
-  - [ ] DELETE /api/usuarios/:id
-  - [ ] POST /api/usuarios/:usuarioId/posts
-  - [ ] GET /api/posts
-  - [ ] PUT /api/posts/:id
-  - [ ] DELETE /api/posts/:id
-- [ ] Validaciones funcionando
-- [ ] Manejo de errores implementado
-- [ ] Populate (relaciones) funcionando
+- [ y] `models.js` con esquemas de Mongoose
+- [ y] Conexión a MongoDB exitosa
+- [ y] Todas las rutas implementadas:
+  - [y ] POST /api/usuarios
+  - [ y] GET /api/usuarios
+  - [ y] GET /api/usuarios/:id
+  - [ y] PUT /api/usuarios/:id
+  - [ y] DELETE /api/usuarios/:id
+  - [ y] POST /api/usuarios/:usuarioId/posts
+  - [ y] GET /api/posts
+  - [ y] PUT /api/posts/:id
+  - [ y] DELETE /api/posts/:id
+- [ y] Validaciones funcionando
+- [ y] Manejo de errores implementado
+- [ y] Populate (relaciones) funcionando
 
 ### Frontend
-- [ ] Dependencias instaladas
-- [ ] Aplicación corriendo en el navegador
+- [ y] Dependencias instaladas
+- [ y] Aplicación corriendo en el navegador
 
 ### Pruebas
-- [ ] Crear usuarios
-- [ ] Listar usuarios
+- [ y] Crear usuarios
+- [ y] Listar usuarios
 - [ ] Crear posts
 - [ ] Editar usuarios y posts
 - [ ] Eliminar usuarios y posts
@@ -744,23 +744,31 @@ Usa este checklist para verificar tu progreso:
 
 ## 🎓 Parte 9: Preguntas de Evaluación 
 
-Responde (EN TUS PROPIAS PALABRAS) estas preguntas para consolidar tu aprendizaje:
+1. ¿Cuál es la principal diferencia entre un ORM y un ODM?
+La diferencia radica en el tipo de base de datos que manejan. Un ORM (como Sequelize) mapea objetos de código a tablas relacionales (filas y columnas). Un ODM (como Mongoose) mapea objetos a documentos JSON/BSON en bases de datos NoSQL. Básicamente, el ORM organiza datos en "rejillas" rígidas y el ODM en "carpetas" de documentos flexibles.
 
-1. **¿Cuál es la principal diferencia entre un ORM y un ODM?**
+2. ¿Por qué MongoDB usa ObjectIds en lugar de integers?
+A diferencia de los integers (1, 2, 3...) que son difíciles de coordinar en sistemas distribuidos, los ObjectIds son de 12 bytes y se generan de forma única casi instantáneamente. Esto permite que varios servidores creen datos al mismo tiempo sin riesgo de repetir un ID, algo vital para la escalabilidad de MongoDB.
 
-2. **¿Por qué MongoDB usa ObjectIds en lugar de integers?**
+3. Explica qué hace el método .populate() en Mongoose
+En tu código, lo usamos para unir el Usuario con sus Posts. Como MongoDB no tiene "JOINs" nativos como SQL, .populate() busca automáticamente el ID de una colección y lo reemplaza con el documento completo de otra. Es lo que nos permitió ver el nombre del autor dentro de un post en lugar de solo un código extraño.
 
-3. **Explica qué hace el método `.populate()` en Mongoose**
+4. ¿Cuándo usarías documentos embebidos en lugar de referencias?
+Embebidos: Cuando los datos siempre se leen juntos (ej. las líneas de una dirección) y no van a crecer infinitamente. Es más rápido porque solo haces una lectura a la base de datos.
 
-4. **¿Cuándo usarías documentos embebidos en lugar de referencias?**
+Referencias: Cuando los datos son grandes o se usan de forma independiente (ej. tus Usuarios y Posts). Evita que un documento supere el límite de 16MB de MongoDB.
 
-5. **¿Qué ventajas tiene MongoDB sobre PostgreSQL para este caso de uso?**
+5. ¿Qué ventajas tiene MongoDB sobre PostgreSQL para este caso de uso?
+La principal es la flexibilidad del esquema. Si mañana decides que un Post necesita un campo nuevo (como "categoría" o "tags"), simplemente lo guardas sin tener que ejecutar una migración compleja de la tabla o detener la base de datos. Además, la estructura JSON es idéntica a cómo manejas los datos en JavaScript.
 
-6. **¿Qué ventajas tiene PostgreSQL sobre MongoDB?**
+6. ¿Qué ventajas tiene PostgreSQL sobre MongoDB?
+PostgreSQL es superior en integridad referencial. Te asegura por "contrato" que no existan posts sin autor. También es mejor para consultas analíticas muy complejas que requieren cruzar muchas tablas diferentes con relaciones matemáticas estrictas.
 
-7. **¿Cómo se manejan las transacciones en MongoDB?** (investiga)
+7. ¿Cómo se manejan las transacciones en MongoDB?
+Aunque nació sin ellas, MongoDB ahora permite transacciones multi-documento (usando sesiones). Esto garantiza que si estás haciendo varios cambios a la vez y uno falla, todos se deshacen (Atomicidad). Se activan mediante el comando startSession() y son muy similares a las de SQL, aunque tienen un costo de rendimiento mayor en NoSQL.
 
-8. **¿Qué es un índice y por qué es importante?**
+8. ¿Qué es un índice y por qué es importante?
+Un índice es como el índice de un libro: una estructura especial que guarda una pequeña parte de los datos (como el email) de forma ordenada. Es importante porque permite a MongoDB encontrar un usuario específico sin tener que leer todos los millones de documentos de la colección, lo que hace que las búsquedas pasen de segundos a milisegundos.
 
 ---
 
