@@ -1,109 +1,130 @@
-# Curso de Desarrollo Web
+# Backend - API REST con Sequelize
 
-## Índice
+Backend de la aplicación de ejemplo de persistencia de datos con PostgreSQL y Sequelize.
 
-### Recursos Teóricos
+## 📁 Estructura
+- **index.js**: Servidor Express con API REST completa (CRUD)
+- **models.js**: Modelos Sequelize (Usuario, Post) y relaciones
+- **.env**: Variables de entorno para configuración de base de datos
+- **docker-compose.yaml**: Configuración de PostgreSQL y Adminer con Docker
 
-1. [Fundamentos de Javascript](recursos/01-Fundamentos-de-Javascript.jsnb)
-2. [DOM](recursos/02-DOM.jsnb)
-3. [Introducción](recursos/03-intro.md)
-4. [Hojas de Estilo (CSS3)](recursos/04-css3.md)
-5. [Fundamentos de Git](recursos/05-fundamentos-git.md)
-6. [Autenticación en React](recursos/06-autenticacion-react.md)
-7. [API RESTful](recursos/07-api-restful.md)
-8. [React](recursos/08-react.md)
-9. [React Hooks](recursos/09-react-hooks.md)
-10. [React Hooks 2](recursos/10-react-hooks-2.md)
-11. [Javascript Avanzado](recursos/11-js.md)
-12. [API RESTful con Express](recursos/12-api-restful-express.md)
-13. [Persistencia de Datos](recursos/13-persistencia-de-datos.md)
-14. [Docker y Containers](recursos/14-docker-containers.md)
-15. [Validación, Seguridad y Middleware en Express](recursos/15-validacion-seguridad-middleware-express.md)
+## 🚀 Instalación
 
----
+### Opción 1: Usar Docker Compose (Recomendado)
 
-## Generación de Presentaciones
+La forma más rápida de empezar es usando Docker Compose, que configura PostgreSQL y Adminer automáticamente:
 
-Este proyecto utiliza [reveal-md](https://github.com/webpro/reveal-md) para convertir los archivos Markdown en presentaciones interactivas.
+1. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
 
-### Instalación
+2. **Configurar variables de entorno**
+   
+   Copia el archivo de ejemplo:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Las credenciales por defecto ya están configuradas para funcionar con docker-compose.
 
-Primero, instala las dependencias del proyecto:
+3. **Iniciar PostgreSQL con Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
+   
+   Esto iniciará:
+   - PostgreSQL en `http://localhost:5432`
+   - Adminer (interfaz web) en `http://localhost:8080`
 
+4. **Iniciar el servidor**
+   ```bash
+   npm start
+   ```
+
+   El servidor estará disponible en `http://localhost:3000`
+
+### Opción 2: Instalar PostgreSQL localmente
+
+Si prefieres instalar PostgreSQL directamente en tu sistema:
+
+**En Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
+
+**En Fedora/RHEL:**
+```bash
+sudo dnf install postgresql-server postgresql-contrib
+sudo postgresql-setup --initdb
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+**En Arch Linux:**
+```bash
+sudo pacman -S postgresql
+sudo -u postgres initdb -D /var/lib/postgres/data
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+Verifica que PostgreSQL esté corriendo:
+```bash
+sudo systemctl status postgresql
+```
+
+**Crear la base de datos y usuario:**
+
+```bash
+sudo -u postgres psql
+```
+
+Luego ejecuta en el prompt de PostgreSQL:
+```sql
+CREATE USER admin WITH PASSWORD 'admin123';
+CREATE DATABASE mydb OWNER admin;
+GRANT ALL PRIVILEGES ON DATABASE mydb TO admin;
+\q
+```
+
+**Instalar dependencias:**
 ```bash
 npm install
 ```
 
-### Visualización de Presentaciones
+**Configurar variables de entorno:**
 
-Para ver las presentaciones en modo interactivo (servidor local):
-
+Copia el archivo de ejemplo y ajusta si es necesario:
 ```bash
-# Ver todas las presentaciones
-npm run slides
-
-# Ver una presentación específica
-npm run slides:intro    # Presentación de Introducción
-npm run slides:css3     # Presentación de CSS3
+cp .env.example .env
 ```
 
-Esto abrirá un servidor local en `http://localhost:1948` donde podrás navegar por las presentaciones usando las flechas del teclado.
+**Iniciar el servidor:**
+   ```bash
+   npm start
+   ```
 
-### Exportación de Presentaciones
+El servidor estará disponible en `http://localhost:3000`
 
-Para generar archivos HTML estáticos de las presentaciones:
+## 📚 API Endpoints
 
-```bash
-# Exportar todas las presentaciones
-npm run export:all
+### Usuarios
+- `POST /usuarios` - Crear usuario
+- `GET /usuarios` - Listar todos los usuarios con sus posts
+- `GET /usuarios/:id` - Obtener un usuario específico
+- `PUT /usuarios/:id` - Actualizar usuario
+- `DELETE /usuarios/:id` - Eliminar usuario
 
-# Exportar una presentación específica
-npm run export:intro    # Exporta a presentaciones/intro
-npm run export:css3     # Exporta a presentaciones/css3
-```
+### Posts
+- `POST /usuarios/:usuarioId/posts` - Crear post para un usuario
+- `GET /posts` - Listar todos los posts con autor
+- `PUT /posts/:id` - Actualizar post
+- `DELETE /posts/:id` - Eliminar post
 
-Las presentaciones exportadas se guardarán en la carpeta `presentaciones/` y podrás abrirlas directamente en tu navegador sin necesidad de un servidor.
-
-### Uso Avanzado de reveal-md
-
-También puedes usar reveal-md directamente con más opciones:
-
-```bash
-# Ver con un tema diferente
-npx reveal-md recursos/intro.md --theme night
-
-# Exportar a PDF (requiere Chrome/Chromium instalado)
-npx reveal-md recursos/intro.md --print presentaciones/intro.pdf
-
-# Ver con configuración personalizada
-npx reveal-md recursos/intro.md --theme solarized --highlight-theme atom-one-dark
-```
-
-**Temas disponibles:** `black`, `white`, `league`, `beige`, `sky`, `night`, `serif`, `simple`, `solarized`, `blood`, `moon`
-
-### Personalización
-
-El proyecto incluye un archivo `reveal-md.json` con la configuración por defecto de las presentaciones. Puedes modificar este archivo para cambiar:
-
-- **theme:** Tema visual de la presentación
-- **highlightTheme:** Tema de resaltado de código
-- **transition:** Tipo de transición entre diapositivas (`slide`, `fade`, `convex`, etc.)
-- **slideNumber:** Mostrar u ocultar numeración de diapositivas
-- Y muchas más opciones...
-
-### Navegación en las Presentaciones
-
-- **Flechas izquierda/derecha:** Navegar entre secciones principales
-- **Flechas arriba/abajo:** Navegar entre sub-secciones
-- **ESC:** Vista general de todas las diapositivas
-- **F:** Pantalla completa
-- **S:** Modo presentador (con notas)
-
----
-
-## Archivos del Proyecto
-
-- `package.json`: Configuración del proyecto y scripts npm
-- `reveal-md.json`: Configuración de las presentaciones
-- `REVEAL-MD-GUIA.md`: Guía completa sobre cómo usar reveal-md y personalizar presentaciones
-- `.gitignore`: Archivos y carpetas excluidos del control de versiones
+## 🔧 Tecnologías
+- Express.js
+- Sequelize ORM
+- PostgreSQL
+- CORS

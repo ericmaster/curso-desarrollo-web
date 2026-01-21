@@ -1,1 +1,0 @@
-https://scribbler.live/learn/javascript-tutorial-beginners/
