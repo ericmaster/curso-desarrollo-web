@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Usuarios Mongo</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; }
+        h1 { color: #333; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input { padding: 10px; margin-right: 10px; border: 1px solid #ddd; border-radius: 4px; width: 200px; }
+        button { padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        ul { list-style: none; padding: 0; }
+        li { background: white; border-bottom: 1px solid #eee; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .delete-btn { background-color: #dc3545; margin-left: 10px; }
+        .post-count { color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Usuarios en MongoDB</h1>
+
+    <div class="card">
+        <h3>Nuevo Usuario</h3>
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="email" id="email" placeholder="Email">
+        <button onclick="crearUsuario()">Guardar Usuario</button>
+    </div>
+
+    <div class="card">
+        <h3>Lista de Usuarios</h3>
+        <ul id="listaUsuarios"></ul>
+    </div>
+
+    <script>
+        const API_URL = '/api/usuarios';
+
+        // 1. Obtener y mostrar usuarios
+        async function cargarUsuarios() {
+            const respuesta = await fetch(API_URL);
+            const usuarios = await respuesta.json();
+            const lista = document.getElementById('listaUsuarios');
+            lista.innerHTML = '';
+
+            usuarios.forEach(usuario => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div>
+                        <strong>${usuario.nombre}</strong> (${usuario.email})
+                        <span class="post-count">Posts: ${usuario.posts ? usuario.posts.length : 0}</span>
+                    </div>
+                    <button class="delete-btn" onclick="eliminarUsuario('${usuario._id}')">Eliminar</button>
+                `;
+                lista.appendChild(li);
+            });
+        }
+
+        // 2. Crear usuario
+        async function crearUsuario() {
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+
+            if(!nombre || !email) return alert('Completa los campos');
+
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, email })
+            });
+
+            if (res.ok) {
+                document.getElementById('nombre').value = '';
+                document.getElementById('email').value = '';
+                cargarUsuarios(); // Recargar lista
+            } else {
+                const error = await res.json();
+                alert('Error: ' + error.error);
+            }
+        }
+
+        // 3. Eliminar usuario
+        async function eliminarUsuario(id) {
+            if(!confirm('¿Seguro que quieres borrar este usuario?')) return;
+            
+            await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+            cargarUsuarios();
+        }
+
+        // Cargar al iniciar
+        cargarUsuarios();
+    </script>
+</body>
+</html>

@@ -1,29 +1,19 @@
 {
-  "name": "curso-desarrollo-web",
+  "name": "ejemplo-persistencia-mongodb",
   "version": "1.0.0",
-  "description": "Curso de Desarrollo Web con presentaciones generadas con reveal-md",
+  "description": "Ejemplo de persistencia con MongoDB y Mongoose",
+  "main": "index.js",
   "scripts": {
-    "slides": "reveal-md recursos/*.md",
-    "slides:intro": "reveal-md recursos/intro.md",
-    "slides:css3": "reveal-md recursos/css3.md",
-    "export:all": "reveal-md recursos/*.md --static presentaciones --static-dirs=recursos",
-    "export:intro": "reveal-md recursos/intro.md --static presentaciones/intro --static-dirs=recursos",
-    "export:css3": "reveal-md recursos/css3.md --static presentaciones/css3 --static-dirs=recursos"
-  },
-  "keywords": [
-    "web",
-    "development",
-    "html",
-    "css",
-    "javascript"
-  ],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "reveal-md": "^6.1.3"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.17",
-    "tailwindcss": "^4.1.17"
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }

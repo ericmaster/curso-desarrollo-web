@@ -1,0 +1,174 @@
+const express = require('express');
+const cors = require('cors');
+const { connectDB, Usuario, Post } = require('./models');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use(express.static('public'));
+// Conectar a la base de datos
+connectDB();
+
+// ==================== RUTAS DE USUARIOS ====================
+// Ruta de bienvenida (opcional)
+app.get('/', (req, res) => {
+  res.send('API de Persistencia con MongoDB funcionando 🚀');
+});
+// Crear usuario
+app.post('/api/usuarios', async (req, res) => {
+  try {
+    const usuario = await Usuario.create(req.body);
+    res.status(201).json(usuario);
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      const errors = Object.values(err.errors).map(e => e.message);
+      return res.status(400).json({ error: errors.join(', ') });
+    }
+    if (err.code === 11000) {
+      return res.status(400).json({ error: 'El email ya está registrado' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Listar usuarios con sus posts
+app.get('/api/usuarios', async (req, res) => {
+  try {
+    const usuarios = await Usuario.find()
+      .populate('posts') // Popula el campo virtual 'posts'
+      .sort({ createdAt: -1 });
+    res.json(usuarios);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Obtener un usuario específico
+app.get('/api/usuarios/:id', async (req, res) => {
+  try {
+    const usuario = await Usuario.findById(req.params.id).populate('posts');
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json(usuario);
+  } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(400).json({ error: 'ID de usuario inválido' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Actualizar usuario
+app.put('/api/usuarios/:id', async (req, res) => {
+  try {
+    const usuario = await Usuario.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { 
+        new: true, // Retorna el documento actualizado
+        runValidators: true // Ejecuta las validaciones
+      }
+    );
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json(usuario);
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      const errors = Object.values(err.errors).map(e => e.message);
+      return res.status(400).json({ error: errors.join(', ') });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Eliminar usuario (y sus posts)
+app.delete('/api/usuarios/:id', async (req, res) => {
+  try {
+    const usuario = await Usuario.findByIdAndDelete(req.params.id);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    // Eliminar todos los posts del usuario para mantener integridad
+    await Post.deleteMany({ autor: req.params.id });
+    res.json({ mensaje: 'Usuario eliminado' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==================== RUTAS DE POSTS ====================
+
+// Crear post para un usuario
+app.post('/api/usuarios/:usuarioId/posts', async (req, res) => {
+  try {
+    const usuario = await Usuario.findById(req.params.usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    const post = await Post.create({
+      ...req.body,
+      autor: req.params.usuarioId
+    });
+    
+    await post.populate('autor');
+    res.status(201).json(post);
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      const errors = Object.values(err.errors).map(e => e.message);
+      return res.status(400).json({ error: errors.join(', ') });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Listar posts
+app.get('/api/posts', async (req, res) => {
+  try {
+    const posts = await Post.find()
+      .populate('autor', 'nombre email')
+      .sort({ createdAt: -1 });
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Actualizar post
+app.put('/api/posts/:id', async (req, res) => {
+  try {
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { titulo: req.body.titulo, contenido: req.body.contenido },
+      { new: true, runValidators: true }
+    ).populate('autor');
+    
+    if (!post) {
+      return res.status(404).json({ error: 'Post no encontrado' });
+    }
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Eliminar post
+app.delete('/api/posts/:id', async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+    if (!post) {
+      return res.status(404).json({ error: 'Post no encontrado' });
+    }
+    res.json({ mensaje: 'Post eliminado' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(` Servidor escuchando en http://localhost:${PORT}`);
+});
