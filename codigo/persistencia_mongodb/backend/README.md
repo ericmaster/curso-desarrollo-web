@@ -1,130 +1,32 @@
-# Backend - API REST con Sequelize
+🔍 Parte 6: Comparación y Análisis
+6.2 Preguntas de Reflexión
+Flexibilidad del esquema: ¿Qué pasa si quieres agregar un nuevo campo "edad" a Usuario? ¿Es más fácil en SQL o en MongoDB? Es más fácil en MongoDB, ya que no maneja una estructura rígida como la de SQL. Al ser una base de datos orientada a documentos, permite agregar nuevos campos de forma dinámica sin necesidad de realizar migraciones complejas o alterar tablas existentes.
 
-Backend de la aplicación de ejemplo de persistencia de datos con PostgreSQL y Sequelize.
+Relaciones: En SQL usamos foreign keys, en MongoDB usamos referencias. ¿Cuál es más eficiente para este caso? SQL puede ser más eficiente en términos de integridad de los datos, ya que el motor de la base de datos garantiza por defecto que las llaves foráneas (FK) existan y sean válidas. En cambio, MongoDB utiliza referencias que son gestionadas a nivel de aplicación mediante Mongoose, lo que ofrece mayor flexibilidad pero requiere más cuidado en la lógica del código.
 
-## 📁 Estructura
-- **index.js**: Servidor Express con API REST completa (CRUD)
-- **models.js**: Modelos Sequelize (Usuario, Post) y relaciones
-- **.env**: Variables de entorno para configuración de base de datos
-- **docker-compose.yaml**: Configuración de PostgreSQL y Adminer con Docker
+Consultas complejas: Si necesitaras hacer un JOIN entre 4 tablas, ¿preferirías SQL o MongoDB? Preferiría SQL, ya que su arquitectura está diseñada específicamente para optimizar este tipo de operaciones. La estructura relacional permite realizar un JOIN de múltiples tablas de manera más natural y eficiente que el proceso de agregación o población en MongoDB.
 
-## 🚀 Instalación
+Escalabilidad: MongoDB es más fácil de escalar horizontalmente. ¿En qué escenarios sería importante? Sería fundamental en aplicaciones que manejan un flujo masivo de usuarios y un volumen de datos que crece constantemente, como es el caso de las redes sociales, sistemas de telemetría o plataformas de streaming.
 
-### Opción 1: Usar Docker Compose (Recomendado)
+📝 Parte 9: Preguntas de Evaluación
+¿Cuál es la principal diferencia entre un ORM y un ODM? La diferencia radica en el tipo de base de datos que gestionan: un ORM (Object-Relational Mapping) se utiliza para bases de datos relacionales (SQL), mientras que un ODM (Object-Document Mapping) se emplea para bases de datos orientadas a documentos (NoSQL).
 
-La forma más rápida de empezar es usando Docker Compose, que configura PostgreSQL y Adminer automáticamente:
+¿Por qué MongoDB usa ObjectIds en lugar de integers? Se utilizan porque MongoDB está diseñado para ser un sistema distribuido. Los ObjectIds garantizan la unicidad global, evitando que dos servidores diferentes generen el mismo identificador simultáneamente, algo que podría ocurrir fácilmente con enteros autoincrementales.
 
-1. **Instalar dependencias**
-   ```bash
-   npm install
-   ```
+Explica qué hace el método .populate() en Mongoose. Este método realiza una función similar al JOIN en SQL; permite reemplazar una referencia (ID) con los datos reales del documento referenciado de otra colección, agilizando la obtención de información relacionada en una sola respuesta lógica.
 
-2. **Configurar variables de entorno**
-   
-   Copia el archivo de ejemplo:
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Las credenciales por defecto ya están configuradas para funcionar con docker-compose.
+¿Cuándo usarías documentos embebidos en lugar de referencias? Se recomienda usar documentos embebidos cuando la información está fuertemente ligada al documento principal y no se espera que crezca de forma infinita. Las referencias son preferibles cuando el volumen de datos relacionados es muy alto o cuando esos datos deben ser consultados de forma independiente.
 
-3. **Iniciar PostgreSQL con Docker Compose**
-   ```bash
-   docker-compose up -d
-   ```
-   
-   Esto iniciará:
-   - PostgreSQL en `http://localhost:5432`
-   - Adminer (interfaz web) en `http://localhost:8080`
+¿Qué ventajas tiene MongoDB sobre PostgreSQL para este caso de uso? La mayor ventaja es la flexibilidad del esquema. Permite iterar rápidamente y agregar o modificar campos sin necesidad de detener la base de datos o ejecutar scripts de migración que bloqueen las tablas.
 
-4. **Iniciar el servidor**
-   ```bash
-   npm start
-   ```
+¿Qué ventajas tiene PostgreSQL sobre MongoDB? PostgreSQL destaca por su estricta integridad de datos y su robustez al manejar relaciones complejas. Es ideal cuando se requiere asegurar que todas las reglas de negocio y relaciones se cumplan a rajatabla en el motor de la base de datos.
 
-   El servidor estará disponible en `http://localhost:3000`
+¿Cómo se manejan las transacciones en MongoDB? Se gestionan mediante una sesión de cliente con los siguientes pasos:
 
-### Opción 2: Instalar PostgreSQL localmente
+Session: Se inicia la sesión y se agrupan las operaciones.
 
-Si prefieres instalar PostgreSQL directamente en tu sistema:
+Commit: Si todas las operaciones se completan con éxito, se aplican los cambios de forma permanente.
 
-**En Ubuntu/Debian:**
-```bash
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-```
+Abort: Si ocurre algún error durante el proceso, se deshacen todos los cambios para mantener la consistencia.
 
-**En Fedora/RHEL:**
-```bash
-sudo dnf install postgresql-server postgresql-contrib
-sudo postgresql-setup --initdb
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-```
-
-**En Arch Linux:**
-```bash
-sudo pacman -S postgresql
-sudo -u postgres initdb -D /var/lib/postgres/data
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-```
-
-Verifica que PostgreSQL esté corriendo:
-```bash
-sudo systemctl status postgresql
-```
-
-**Crear la base de datos y usuario:**
-
-```bash
-sudo -u postgres psql
-```
-
-Luego ejecuta en el prompt de PostgreSQL:
-```sql
-CREATE USER admin WITH PASSWORD 'admin123';
-CREATE DATABASE mydb OWNER admin;
-GRANT ALL PRIVILEGES ON DATABASE mydb TO admin;
-\q
-```
-
-**Instalar dependencias:**
-```bash
-npm install
-```
-
-**Configurar variables de entorno:**
-
-Copia el archivo de ejemplo y ajusta si es necesario:
-```bash
-cp .env.example .env
-```
-
-**Iniciar el servidor:**
-   ```bash
-   npm start
-   ```
-
-El servidor estará disponible en `http://localhost:3000`
-
-## 📚 API Endpoints
-
-### Usuarios
-- `POST /usuarios` - Crear usuario
-- `GET /usuarios` - Listar todos los usuarios con sus posts
-- `GET /usuarios/:id` - Obtener un usuario específico
-- `PUT /usuarios/:id` - Actualizar usuario
-- `DELETE /usuarios/:id` - Eliminar usuario
-
-### Posts
-- `POST /usuarios/:usuarioId/posts` - Crear post para un usuario
-- `GET /posts` - Listar todos los posts con autor
-- `PUT /posts/:id` - Actualizar post
-- `DELETE /posts/:id` - Eliminar post
-
-## 🔧 Tecnologías
-- Express.js
-- Sequelize ORM
-- PostgreSQL
-- CORS
+¿Qué es un índice y por qué es importante? Un índice funciona como un "puntero" o referencia rápida que le indica a la base de datos dónde buscar datos específicos sin tener que recorrer toda la colección completa. Su importancia reside en que mejora drásticamente la velocidad de las consultas.
