@@ -571,6 +571,13 @@ npm run dev
 3. ¿Qué diferencias notas en los IDs?
 4. ¿Cómo se manejan los timestamps?
 
+Respuesta:
+
+Al crear un usuario en PostgreSQL, los datos se almacenan en una tabla con columnas definidas previamente y el ID suele ser un número entero autoincremental.
+En MongoDB, el usuario se almacena como un documento JSON dentro de una colección y el ID es un ObjectId, que es un identificador único generado automáticamente.
+
+En cuanto a los timestamps, en PostgreSQL normalmente se definen manualmente mediante columnas como createdAt y updatedAt, mientras que en MongoDB con Mongoose estos campos se generan automáticamente usando la opción timestamps.
+
 **Ejercicio B: Consultas**
 
 Compara estas operaciones:
@@ -584,22 +591,44 @@ Compara estas operaciones:
 | Actualizar | `usuario.update({...})` | `findByIdAndUpdate(...)` |
 | Eliminar | `usuario.destroy()` | `findByIdAndDelete(id)` |
 
+Respuesta:
+- Las operaciones en Sequelize y Mongoose son conceptualmente similares, pero cambian en su implementación:
+- Sequelize utiliza métodos orientados a tablas y relaciones SQL.
+- Mongoose trabaja directamente con documentos y colecciones.
+- En Sequelize las relaciones se manejan con include.
+- En Mongoose se utilizan referencias y el método populate().
+- En general, Mongoose ofrece una sintaxis más simple y cercana a JavaScript, mientras que Sequelize mantiene una lógica más cercana a SQL.
 **Ejercicio C: Validaciones**
 
 1. Intenta crear un usuario sin email en ambas versiones
 2. Intenta crear dos usuarios con el mismo email
 3. Observa cómo manejan los errores
 
+Respuesta:
+
+Al intentar crear un usuario sin email:
+- En PostgreSQL con Sequelize se genera un error de validación basado en el esquema de la tabla.
+- En MongoDB con Mongoose se genera un error de validación definido en el esquema del modelo.
+
+Al intentar crear dos usuarios con el mismo email:
+- PostgreSQL rechaza la operación por la restricción UNIQUE.
+- MongoDB también rechaza la operación debido al índice único definido en el esquema.
+
+En ambos casos, los errores deben ser capturados y manejados desde la aplicación.
+
 ### 6.2 Preguntas de Reflexión
 
 1. **Flexibilidad del esquema**: ¿Qué pasa si quieres agregar un nuevo campo "edad" a Usuario? ¿Es más fácil en SQL o en MongoDB?
-
+    En MongoDB es más fácil agregar un nuevo campo como “edad”, ya que no tiene un esquema fijo y los documentos pueden cambiar sin afectar a los existentes. 
+    En SQL, se debe modificar la tabla con un ALTER TABLE, lo que puede ser más lento y complicado
 2. **Relaciones**: En SQL usamos foreign keys, en MongoDB usamos referencias. ¿Cuál es más eficiente para este caso?
-
+    En SQL, las relaciones con foreign keys son más eficientes porque mantienen la integridad de los datos automáticamente y permiten hacer consultas más rápidas y seguras. 
+    En MongoDB, las referencias requieren más lógica desde la aplicación.
 3. **Consultas complejas**: Si necesitaras hacer un JOIN entre 4 tablas, ¿preferirías SQL o MongoDB?
-
+   Para consultas que necesitan varios JOIN, SQL es mejor porque está diseñado para manejar relaciones complejas de forma clara y eficiente. 
+   En MongoDB estas consultas son posibles, pero más difíciles de manejar.
 4. **Escalabilidad**: MongoDB es más fácil de escalar horizontalmente. ¿En qué escenarios sería importante?
-
+  La escalabilidad horizontal de MongoDB es importante en aplicaciones con muchos usuarios, grandes cantidades de datos o sistemas distribuidos, donde se necesita agregar servidores fácilmente para soportar la carga.
 ---
 
 ## 🚀 Parte 7: Extensiones y Mejoras
@@ -706,39 +735,39 @@ app.get('/api/posts', async (req, res) => {
 Usa este checklist para verificar tu progreso:
 
 ### Configuración
-- [ ] MongoDB corriendo en Docker
-- [ ] Mongo Express accesible
-- [ ] Variables de entorno configuradas
-- [ ] Dependencias instaladas
+- [ X ] MongoDB corriendo en Docker
+- [ X  ] Mongo Express accesible
+- [ X ] Variables de entorno configuradas
+- [ X ] Dependencias instaladas
 
 ### Backend
-- [ ] `models.js` con esquemas de Mongoose
-- [ ] Conexión a MongoDB exitosa
-- [ ] Todas las rutas implementadas:
-  - [ ] POST /api/usuarios
-  - [ ] GET /api/usuarios
-  - [ ] GET /api/usuarios/:id
-  - [ ] PUT /api/usuarios/:id
-  - [ ] DELETE /api/usuarios/:id
-  - [ ] POST /api/usuarios/:usuarioId/posts
-  - [ ] GET /api/posts
-  - [ ] PUT /api/posts/:id
-  - [ ] DELETE /api/posts/:id
-- [ ] Validaciones funcionando
-- [ ] Manejo de errores implementado
-- [ ] Populate (relaciones) funcionando
+- [ X ] `models.js` con esquemas de Mongoose
+- [ X ] Conexión a MongoDB exitosa
+- [ X ] Todas las rutas implementadas:
+  - [ X ] POST /api/usuarios
+  - [ X ] GET /api/usuarios
+  - [ X ] GET /api/usuarios/:id
+  - [ X ] PUT /api/usuarios/:id
+  - [ X ] DELETE /api/usuarios/:id
+  - [ X ] POST /api/usuarios/:usuarioId/posts
+  - [ X ] GET /api/posts
+  - [ X ] PUT /api/posts/:id
+  - [ X ] DELETE /api/posts/:id
+- [ X ] Validaciones funcionando
+- [ X ] Manejo de errores implementado
+- [ X ] Populate (relaciones) funcionando
 
 ### Frontend
-- [ ] Dependencias instaladas
-- [ ] Aplicación corriendo en el navegador
+- [ X ] Dependencias instaladas
+- [ X ] Aplicación corriendo en el navegador
 
 ### Pruebas
-- [ ] Crear usuarios
-- [ ] Listar usuarios
-- [ ] Crear posts
-- [ ] Editar usuarios y posts
-- [ ] Eliminar usuarios y posts
-- [ ] Verificar datos en Mongo Express
+- [ X ] Crear usuarios
+- [ X ] Listar usuarios
+- [ X ] Crear posts
+- [ X ] Editar usuarios y posts
+- [ X ] Eliminar usuarios y posts
+- [ X ] Verificar datos en Mongo Express
 
 ---
 
@@ -747,21 +776,23 @@ Usa este checklist para verificar tu progreso:
 Responde (EN TUS PROPIAS PALABRAS) estas preguntas para consolidar tu aprendizaje:
 
 1. **¿Cuál es la principal diferencia entre un ORM y un ODM?**
-
+    Un **ORM (Object Relational Mapping)** se usa con bases de datos relacionales como PostgreSQL y trabaja con tablas y filas.  
+    Un **ODM (Object Document Mapping)** se usa con bases de datos NoSQL como MongoDB y trabaja con documentos en formato JSON.
 2. **¿Por qué MongoDB usa ObjectIds en lugar de integers?**
-
+    Porque los **ObjectIds** son únicos de forma global, se pueden generar automáticamente y funcionan mejor en sistemas distribuidos. 
+    Además, incluyen información como la fecha de creación.
 3. **Explica qué hace el método `.populate()` en Mongoose**
-
+    El método `.populate()` permite obtener los datos completos de un documento relacionado, en lugar de solo su ID. Es parecido a hacer un JOIN en SQL.
 4. **¿Cuándo usarías documentos embebidos en lugar de referencias?**
-
+    Cuando los datos están muy relacionados, se acceden juntos con frecuencia y no crecen demasiado, ya que mejora el rendimiento y reduce consultas.
 5. **¿Qué ventajas tiene MongoDB sobre PostgreSQL para este caso de uso?**
-
+    MongoDB es más flexible, no requiere un esquema fijo y es más fácil de escalar horizontalmente, lo que lo hace ideal para aplicaciones con datos cambiantes.
 6. **¿Qué ventajas tiene PostgreSQL sobre MongoDB?**
-
+    PostgreSQL maneja mejor relaciones complejas, transacciones avanzadas e integridad de datos, siendo ideal para sistemas con reglas estrictas.
 7. **¿Cómo se manejan las transacciones en MongoDB?** (investiga)
-
+    MongoDB maneja transacciones mediante sesiones, permitiendo operaciones ACID sobre varios documentos; se usan desde la versión 4.0, pero se recomiendan solo cuando no basta la atomicidad por documento.
 8. **¿Qué es un índice y por qué es importante?**
-
+    Un índice es una estructura que mejora la velocidad de las consultas. Es importante porque reduce el tiempo de búsqueda de datos, especialmente en bases grandes.
 ---
 
 ## 📚 Recursos Adicionales
