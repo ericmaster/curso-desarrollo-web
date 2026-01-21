@@ -1,45 +1,63 @@
-// Configuración de Sequelize para conectar a PostgreSQL
-const { Sequelize, DataTypes } = require('sequelize');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
-// Configuración usando variables de entorno
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
+// Función para conectar a MongoDB usando la URI de Atlas
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('✅ Conectado a MongoDB Atlas');
+  } catch (error) {
+    console.error('❌ Error conectando a MongoDB:', error.message);
+    process.exit(1);
   }
-);
+};
 
-// Definición del modelo Usuario
-const Usuario = sequelize.define('Usuario', {
+// Esquema de Usuario (Equivalente al modelo Usuario de Sequelize)
+const usuarioSchema = new mongoose.Schema({
   nombre: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: String,
+    required: [true, 'El nombre es requerido'],
+    trim: true
   },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    type: String,
+    required: [true, 'El email es requerido'],
+    unique: true,
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Por favor ingresa un email válido']
   }
+}, { 
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
-// Definición del modelo Post
-const Post = sequelize.define('Post', {
+// Relación virtual: Un usuario tiene muchos posts (Simula el hasMany)
+usuarioSchema.virtual('posts', {
+  ref: 'Post',
+  localField: '_id',
+  foreignField: 'autor'
+});
+
+// Esquema de Post (Equivalente al modelo Post de Sequelize)
+const postSchema = new mongoose.Schema({
   titulo: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: String,
+    required: [true, 'El título es requerido'],
+    minlength: [3, 'El título debe tener al menos 3 caracteres']
   },
   contenido: {
-    type: DataTypes.TEXT
+    type: String
+  },
+  autor: {
+    type: mongoose.Schema.Types.ObjectId, // Referencia al ID del Usuario
+    ref: 'Usuario',
+    required: [true, 'El autor es requerido']
   }
-});
+}, { timestamps: true });
 
-// Relaciones
-Usuario.hasMany(Post, { as: 'posts', foreignKey: 'usuarioId' });
-Post.belongsTo(Usuario, { as: 'autor', foreignKey: 'usuarioId' });
+// Exportar los Modelos y la función de conexión
+const Usuario = mongoose.model('Usuario', usuarioSchema);
+const Post = mongoose.model('Post', postSchema);
 
-module.exports = { sequelize, Usuario, Post };
+module.exports = { connectDB, Usuario, Post };

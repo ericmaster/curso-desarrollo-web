@@ -1,15 +1,15 @@
 const express = require('express');
 const cors = require('cors');
-const { sequelize, Usuario, Post } = require('./models');
-
+const { connectDB, Usuario, Post } = require('./models'); // Importa desde models.js
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// Sincronizar modelos y base de datos
-sequelize.sync().then(() => {
-  console.log('Base de datos sincronizada');
-});
+// Conectar a MongoDB Atlas
+connectDB();
+
+// ==================== RUTAS DE USUARIOS ====================
 
 // Crear usuario
 app.post('/api/usuarios', async (req, res) => {
@@ -17,94 +17,58 @@ app.post('/api/usuarios', async (req, res) => {
     const usuario = await Usuario.create(req.body);
     res.status(201).json(usuario);
   } catch (err) {
+    if (err.code === 11000) return res.status(400).json({ error: 'El email ya existe' });
     res.status(400).json({ error: err.message });
   }
 });
 
-// Listar usuarios con sus posts
+// Listar usuarios con sus posts (usando populate)
 app.get('/api/usuarios', async (req, res) => {
-  const usuarios = await Usuario.findAll({ include: 'posts' });
-  res.json(usuarios);
+  try {
+    const usuarios = await Usuario.find().populate('posts');
+    res.json(usuarios);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// Crear post para un usuario
+// Eliminar usuario y sus posts asociados
+app.delete('/api/usuarios/:id', async (req, res) => {
+  try {
+    await Usuario.findByIdAndDelete(req.params.id);
+    await Post.deleteMany({ autor: req.params.id });
+    res.json({ mensaje: 'Usuario y sus posts eliminados' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==================== RUTAS DE POSTS ====================
+
+// Crear post para un usuario específico
 app.post('/api/usuarios/:usuarioId/posts', async (req, res) => {
   try {
-    const usuario = await Usuario.findByPk(req.params.usuarioId);
-    if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
-    const post = await Post.create({ ...req.body, usuarioId: usuario.id });
+    const post = await Post.create({
+      ...req.body,
+      autor: req.params.usuarioId
+    });
     res.status(201).json(post);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// Listar posts
+// Listar todos los posts con info del autor
 app.get('/api/posts', async (req, res) => {
-  const posts = await Post.findAll({ include: { model: Usuario, as: 'autor' } });
-  res.json(posts);
-});
-
-// Obtener un usuario específico
-app.get('/api/usuarios/:id', async (req, res) => {
   try {
-    const usuario = await Usuario.findByPk(req.params.id, { include: 'posts' });
-    if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json(usuario);
+    const posts = await Post.find().populate('autor', 'nombre email');
+    res.json(posts);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Actualizar usuario
-app.put('/api/usuarios/:id', async (req, res) => {
-  try {
-    const usuario = await Usuario.findByPk(req.params.id);
-    if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
-    await usuario.update(req.body);
-    res.json(usuario);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// Eliminar usuario
-app.delete('/api/usuarios/:id', async (req, res) => {
-  try {
-    const usuario = await Usuario.findByPk(req.params.id);
-    if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
-    await usuario.destroy();
-    res.json({ mensaje: 'Usuario eliminado' });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// Actualizar post
-app.put('/api/posts/:id', async (req, res) => {
-  try {
-    const post = await Post.findByPk(req.params.id);
-    if (!post) return res.status(404).json({ error: 'Post no encontrado' });
-    await post.update(req.body);
-    res.json(post);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// Eliminar post
-app.delete('/api/posts/:id', async (req, res) => {
-  try {
-    const post = await Post.findByPk(req.params.id);
-    if (!post) return res.status(404).json({ error: 'Post no encontrado' });
-    await post.destroy();
-    res.json({ mensaje: 'Post eliminado' });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
