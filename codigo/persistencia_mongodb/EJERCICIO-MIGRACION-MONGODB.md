@@ -594,12 +594,21 @@ Compara estas operaciones:
 
 1. **Flexibilidad del esquema**: ¿Qué pasa si quieres agregar un nuevo campo "edad" a Usuario? ¿Es más fácil en SQL o en MongoDB?
 
+Agregar el campo “edad” es más fácil en MongoDB, porque no requiere modificar toda la estructura existente.
+En SQL es necesario alterar la tabla, lo que puede ser más complejo cuando ya hay datos.
+
 2. **Relaciones**: En SQL usamos foreign keys, en MongoDB usamos referencias. ¿Cuál es más eficiente para este caso?
+
+Para este caso es más eficiente usar referencias en MongoDB, porque la relación usuario–posts es simple y se puede manejar fácilmente con populate().
+En SQL las foreign keys son más estrictas, pero no son necesarias para una relación sencilla como esta.
 
 3. **Consultas complejas**: Si necesitaras hacer un JOIN entre 4 tablas, ¿preferirías SQL o MongoDB?
 
+Preferiría SQL, porque está diseñado para manejar JOINs complejos entre varias tablas de forma más eficiente y clara que MongoDB.
+
 4. **Escalabilidad**: MongoDB es más fácil de escalar horizontalmente. ¿En qué escenarios sería importante?
 
+La escalabilidad horizontal de MongoDB es importante en aplicaciones con muchos usuarios, alto volumen de datos o muchas lecturas y escrituras simultáneas, como redes sociales o aplicaciones web grandes.
 ---
 
 ## 🚀 Parte 7: Extensiones y Mejoras
@@ -706,39 +715,39 @@ app.get('/api/posts', async (req, res) => {
 Usa este checklist para verificar tu progreso:
 
 ### Configuración
-- [ ] MongoDB corriendo en Docker
-- [ ] Mongo Express accesible
-- [ ] Variables de entorno configuradas
-- [ ] Dependencias instaladas
+- [x] MongoDB corriendo en Docker
+- [x] Mongo Express accesible
+- [x] Variables de entorno configuradas
+- [x] Dependencias instaladas
 
 ### Backend
-- [ ] `models.js` con esquemas de Mongoose
-- [ ] Conexión a MongoDB exitosa
-- [ ] Todas las rutas implementadas:
-  - [ ] POST /api/usuarios
-  - [ ] GET /api/usuarios
-  - [ ] GET /api/usuarios/:id
-  - [ ] PUT /api/usuarios/:id
-  - [ ] DELETE /api/usuarios/:id
-  - [ ] POST /api/usuarios/:usuarioId/posts
-  - [ ] GET /api/posts
-  - [ ] PUT /api/posts/:id
-  - [ ] DELETE /api/posts/:id
-- [ ] Validaciones funcionando
-- [ ] Manejo de errores implementado
-- [ ] Populate (relaciones) funcionando
+- [x] `models.js` con esquemas de Mongoose
+- [x] Conexión a MongoDB exitosa
+- [x] Todas las rutas implementadas:
+  - [x] POST /api/usuarios
+  - [x] GET /api/usuarios
+  - [x] GET /api/usuarios/:id
+  - [x] PUT /api/usuarios/:id
+  - [x] DELETE /api/usuarios/:id
+  - [x] POST /api/usuarios/:usuarioId/posts
+  - [x] GET /api/posts
+  - [x] PUT /api/posts/:id
+  - [x] DELETE /api/posts/:id
+- [x] Validaciones funcionando
+- [x] Manejo de errores implementado
+- [x] Populate (relaciones) funcionando
 
 ### Frontend
-- [ ] Dependencias instaladas
-- [ ] Aplicación corriendo en el navegador
+- [x] Dependencias instaladas
+- [x] Aplicación corriendo en el navegador
 
 ### Pruebas
-- [ ] Crear usuarios
-- [ ] Listar usuarios
-- [ ] Crear posts
-- [ ] Editar usuarios y posts
-- [ ] Eliminar usuarios y posts
-- [ ] Verificar datos en Mongo Express
+- [x] Crear usuarios
+- [x] Listar usuarios
+- [x] Crear posts
+- [x] Editar usuarios y posts
+- [x] Eliminar usuarios y posts
+- [x] Verificar datos en Mongo Express
 
 ---
 
@@ -747,20 +756,28 @@ Usa este checklist para verificar tu progreso:
 Responde (EN TUS PROPIAS PALABRAS) estas preguntas para consolidar tu aprendizaje:
 
 1. **¿Cuál es la principal diferencia entre un ORM y un ODM?**
+Un ORM se usa cuando trabajamos con bases de datos que tienen tablas y relaciones, mientras que un ODM se usa con MongoDB y trabaja con documentos en lugar de tablas
 
 2. **¿Por qué MongoDB usa ObjectIds en lugar de integers?**
+Porque los ObjectIds permiten que cada registro sea único sin depender de números consecutivos, lo cual es útil cuando hay muchos datos o servidores
 
 3. **Explica qué hace el método `.populate()` en Mongoose**
+El método .populate() sirve para traer la información relacionada, por ejemplo mostrar los datos del autor de un post sin guardar todo repetido
 
 4. **¿Cuándo usarías documentos embebidos en lugar de referencias?**
+Usaría documentos embebidos cuando los datos solo tienen sentido dentro de otro documento y no se van a usar por separado
 
 5. **¿Qué ventajas tiene MongoDB sobre PostgreSQL para este caso de uso?**
+MongoDB es más flexible, permite hacer cambios sin afectar toda la base de datos y es más fácil de escalar en aplicaciones grandes
 
 6. **¿Qué ventajas tiene PostgreSQL sobre MongoDB?**
+PostgreSQL es mejor cuando se necesitan consultas más complejas y un control más estricto de los datos
 
 7. **¿Cómo se manejan las transacciones en MongoDB?** (investiga)
+MongoDB permite usar transacciones para asegurar que varias operaciones se ejecuten correctamente sin errores
 
 8. **¿Qué es un índice y por qué es importante?**
+Un índice ayuda a que las búsquedas sean más rápidas y mejora el rendimiento de la aplicación
 
 ---
 
